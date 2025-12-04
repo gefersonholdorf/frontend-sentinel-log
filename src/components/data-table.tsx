@@ -17,8 +17,8 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
     const { theme } = useTheme()
     return (
         <table className={`
-                            w-full outline rounded-lg
-                            ${theme === 'light' ? 'bg-gray-100 outline-gray-200' : 'bg-zinc-900 outline-zinc-700'}
+                            w-full outline rounded-lg shadow-primary
+                            ${theme === 'light' ? 'bg-gray-100/60 outline-gray-200' : 'bg-zinc-900 outline-zinc-700'}
                         `}>
             <thead>
                 <tr>

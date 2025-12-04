@@ -1,5 +1,5 @@
 import { ThemeSwitcher } from "@/components/ui/theme-switcher";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, Code } from "lucide-react";
 import { useState } from "react";
 import { Outlet } from "react-router";
 import { useTheme } from "./context/theme-context";
@@ -19,10 +19,10 @@ export function Layout() {
         <div className="w-full min-h-screen flex">
             <div
                 className={`
-                    border-r p-4 flex flex-col justify-between
+                    border-r p-4 flex flex-col justify-between shadow-primary max-h-screen sticky top-0
                     ${open ? 'w-2/12 animate-width' : 'w-1/14 animate-width'}
                     ${theme === 'light'
-                        ? 'border-r-gray-300 bg-gray-100'
+                        ? 'border-r-gray-200 bg-gray-100/60'
                         : 'border-r-gray-800 bg-zinc-900'
                     } 
                 `}
@@ -53,6 +53,15 @@ export function Layout() {
                 <div className="flex flex-col gap-4">
                     <Separator className="h-3" />
                     <UserPanel open={open} theme={theme} />
+                    <Separator className="h-3" />
+                    <footer className="flex items-center justify-center gap-2 text-center text-xs opacity-70">
+                        {open && (
+                            <>
+                                <Code size={16} />
+                                Desenvolvido por Geferson Holdorf
+                            </>
+                        )}
+                    </footer>
                 </div>
             </div>
             <div className="w-full">
