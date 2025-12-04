@@ -11,9 +11,12 @@ export function DashboardPage() {
         <div className="p-6 space-y-6 mb-4">
             <TitlePage title="Dashboard" description="Visão geral da sua plataforma de observabilidade" />
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-5 gap-4">
                 <Card title="Total de Clientes" value="6">
                     <User />
+                </Card>
+                <Card title="Total de APIs" value="8">
+                    <Globe />
                 </Card>
                 <Card title="APIs Ativas" value="6">
                     <Globe className="text-emerald-500 size-8" />

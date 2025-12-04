@@ -28,12 +28,14 @@ import type { PieSectorDataItem } from "recharts/types/polar/Pie"
 // --------------------
 //  Dados reais do gráfico
 // --------------------
+const palette = ["#4C1D95", "#5B21B6", "#6D28D9", "#7C3AED", "#A78BFA"]
+
 const logsData = [
-    { client: "AlphaTech Solutions", logs: 186, color: "var(--chart-1)" },
-    { client: "BlueWave Corp", logs: 305, color: "var(--chart-2)" },
-    { client: "PrimeDigital Labs", logs: 237, color: "var(--chart-3)" },
-    { client: "NovaEdge Systems", logs: 173, color: "var(--chart-4)" },
-    { client: "SkyLink Innovations", logs: 209, color: "var(--chart-5)" },
+    { client: "AlphaTech Solutions", logs: 186, color: palette[0] },
+    { client: "BlueWave Corp", logs: 305, color: palette[1] },
+    { client: "PrimeDigital Labs", logs: 237, color: palette[2] },
+    { client: "NovaEdge Systems", logs: 173, color: palette[3] },
+    { client: "SkyLink Innovations", logs: 209, color: palette[4] },
 ]
 
 // --------------------

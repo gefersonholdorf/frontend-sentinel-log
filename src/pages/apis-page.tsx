@@ -1,8 +1,14 @@
 import { TitlePage } from "@/components/ui/title-page";
 import { Button } from "@/components/ui/button";
-import { Globe, Plus } from "lucide-react";
+import { CircleCheck, CircleX, Globe, Plus } from "lucide-react";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { InputPrimary } from "@/components/ui/input-primary";
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import "dayjs/locale/pt-br"
+
+dayjs.extend(relativeTime)
+dayjs.locale("pt-br")
 
 interface Api {
     id: number
@@ -11,8 +17,8 @@ interface Api {
     status: 'active' | 'inactive'
     logs: number
     token: string
-    tokenExpiration: string
-    createdAt: string
+    tokenExpiration: Date
+    createdAt: Date
 }
 
 const columns: DataTableColumn<Api>[] = [
@@ -25,7 +31,7 @@ const columns: DataTableColumn<Api>[] = [
                 <div className="flex p-2 rounded-lg bg-primary-background/10">
                     <Globe className="size-4 text-primary-background" />
                 </div>
-                {value}
+                {dayjs(value).format('DD/MM/YYYY')}
             </span>
         )
     },
@@ -40,12 +46,41 @@ const columns: DataTableColumn<Api>[] = [
             const short = String(value).length > 10 ? String(value).slice(0, 8) + "..." : value;
             return (
                 <span className="p-2 bg-primary-background/5 rounded-sm truncate">
-                    {short}
+                    {short.toString()}
                 </span>
             )
         }
     },
-    { header: "Expira Em", accessor: 'tokenExpiration' },
+    {
+        header: "Expira Em",
+        accessor: 'tokenExpiration',
+        render: (value) => {
+            const daysRemaining = dayjs(value).diff(dayjs(), 'day')
+            console.log(daysRemaining)
+            return (
+                <div>
+                    {daysRemaining <= 3 && (
+                        <span className="flex gap-2 items-center">
+                            <CircleX className="text-red-500" size={15} />
+                            {dayjs(value).format('DD/MM/YYYY')}
+                        </span>
+                    )}
+                    {(daysRemaining <= 15 && daysRemaining > 3) && (
+                        <span className="flex gap-2 items-center">
+                            <CircleX className="text-amber-500" size={15} />
+                            {dayjs(value).format('DD/MM/YYYY')}
+                        </span>
+                    )}
+                    {daysRemaining > 15 && (
+                        <span className="flex gap-2 items-center">
+                            <CircleCheck className="text-emerald-500" size={15} />
+                            {dayjs(value).format('DD/MM/YYYY')}
+                        </span>
+                    )}
+                </div>
+            )
+        }
+    },
     {
         header: "Status",
         accessor: 'status',
@@ -61,7 +96,13 @@ const columns: DataTableColumn<Api>[] = [
         )
     },
     { header: "Logs", accessor: 'logs' },
-    { header: "Criado Em", accessor: 'createdAt' },
+    {
+        header: "Criado Em",
+        accessor: 'createdAt',
+        render: (value) => (
+            <span>{dayjs(value).format('DD/MM/YYYY')}</span>
+        )
+    },
 ];
 
 const apis: Api[] = [
@@ -72,8 +113,8 @@ const apis: Api[] = [
         status: "active",
         logs: 1523,
         token: "TK-4f82a9c3ba",
-        tokenExpiration: "03/12/2025",
-        createdAt: "03/12/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-12-03"),
     },
     {
         id: 2,
@@ -82,8 +123,8 @@ const apis: Api[] = [
         status: "inactive",
         logs: 987,
         token: "TK-83bd17f94c",
-        tokenExpiration: "03/12/2025",
-        createdAt: "26/11/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-11-26"),
     },
     {
         id: 3,
@@ -92,8 +133,8 @@ const apis: Api[] = [
         status: "active",
         logs: 2310,
         token: "TK-f182c493aa",
-        tokenExpiration: "03/12/2025",
-        createdAt: "01/12/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-12-01"),
     },
     {
         id: 4,
@@ -102,8 +143,8 @@ const apis: Api[] = [
         status: "active",
         logs: 411,
         token: "TK-91ac3bb4d2",
-        tokenExpiration: "03/12/2025",
-        createdAt: "22/10/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-12-22"),
     },
     {
         id: 5,
@@ -112,8 +153,8 @@ const apis: Api[] = [
         status: "inactive",
         logs: 73,
         token: "TK-cc9e31b772",
-        tokenExpiration: "03/12/2025",
-        createdAt: "15/09/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-12-30"),
     },
     {
         id: 6,
@@ -122,8 +163,8 @@ const apis: Api[] = [
         status: "active",
         logs: 1897,
         token: "TK-a3910ee93b",
-        tokenExpiration: "03/12/2025",
-        createdAt: "05/12/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-12-05"),
     },
     {
         id: 7,
@@ -132,8 +173,8 @@ const apis: Api[] = [
         status: "active",
         logs: 3421,
         token: "TK-9912aa7e51",
-        tokenExpiration: "03/12/2025",
-        createdAt: "28/11/2025",
+        tokenExpiration: new Date("2025-12-09"),
+        createdAt: new Date("2025-11-28"),
     },
     {
         id: 8,
@@ -142,8 +183,8 @@ const apis: Api[] = [
         status: "inactive",
         logs: 245,
         token: "TK-7af39d4aac",
-        tokenExpiration: "03/12/2025",
-        createdAt: "20/08/2025",
+        tokenExpiration: new Date("2025-12-15"),
+        createdAt: new Date("2025-08-20"),
     },
     {
         id: 9,
@@ -152,8 +193,8 @@ const apis: Api[] = [
         status: "active",
         logs: 1004,
         token: "TK-dfa991a0e5",
-        tokenExpiration: "03/12/2025",
-        createdAt: "17/11/2025",
+        tokenExpiration: new Date("2025-12-22"),
+        createdAt: new Date("2025-11-17"),
     },
     {
         id: 10,
@@ -162,8 +203,8 @@ const apis: Api[] = [
         status: "active",
         logs: 2756,
         token: "TK-4fe81cd294",
-        tokenExpiration: "03/12/2025",
-        createdAt: "09/09/2025",
+        tokenExpiration: new Date("2025-12-03"),
+        createdAt: new Date("2025-09-09"),
     },
 ];
 
@@ -179,7 +220,7 @@ export function APIsPage() {
 
             <InputPrimary placeholder="Buscar APIs..." />
 
-            <DataTable columns={columns} data={apis} component="apis" />
+            <DataTable columns={columns} data={apis} component="apis" haveAction={true} />
         </div>
     )
 }

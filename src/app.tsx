@@ -7,6 +7,7 @@ import { LogsPage } from "./pages/logs-page";
 import { ReportsPage } from "./pages/reports-page";
 import { SettingsPage } from "./pages/settings-page";
 import { ClientDetailPage } from "./pages/client-detail-page";
+import { ApiDetailPage } from "./pages/api-detail-page";
 
 export function App() {
   return (
@@ -23,6 +24,7 @@ export function App() {
           <Route path="/settings" element={<SettingsPage />} />
 
           <Route path="/clients/:id" element={<ClientDetailPage />} />
+          <Route path="/apis/:id" element={<ApiDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

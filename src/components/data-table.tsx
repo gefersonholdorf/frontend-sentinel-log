@@ -17,9 +17,10 @@ export interface DataTableProps<T extends WithId> {
     columns: DataTableColumn<T>[];
     data: T[];
     component: string
+    haveAction: boolean
 }
 
-export function DataTable<T extends WithId>({ columns, data, component }: DataTableProps<T>) {
+export function DataTable<T extends WithId>({ columns, data, component, haveAction }: DataTableProps<T>) {
     const { theme } = useTheme()
     const navigate = useNavigate()
 
@@ -35,9 +36,11 @@ export function DataTable<T extends WithId>({ columns, data, component }: DataTa
                             {col.header}
                         </th>
                     ))}
-                    <th className="p-2 text-left text-[.9rem] font-medium">
-                        Ações
-                    </th>
+                    {haveAction && (
+                        <th className="p-2 text-left text-[.9rem] font-medium">
+                            Ações
+                        </th>
+                    )}
                 </tr>
             </thead>
 
@@ -54,33 +57,35 @@ export function DataTable<T extends WithId>({ columns, data, component }: DataTa
                                 </td>
                             );
                         })}
-                        <td className={`p-2 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
-                            <div className="p-2 rounded-lg hover:text-primary-background">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <EllipsisVertical className="size-4 cursor-pointer" />
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="start">
-                                        <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                                        <DropdownMenuGroup>
-                                            <DropdownMenuItem
-                                                onClick={() => navigate(`/${component}/${row.id}`)}>
-                                                <Eye />
-                                                Visualizar
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <Edit />
-                                                Editar
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <X className="text-red-500" />
-                                                Inativar
-                                            </DropdownMenuItem>
-                                        </ DropdownMenuGroup>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </div>
-                        </td>
+                        {haveAction && (
+                            <td className={`p-2 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
+                                <div className="p-2 rounded-lg hover:text-primary-background">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <EllipsisVertical className="size-4 cursor-pointer" />
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="start">
+                                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                            <DropdownMenuGroup>
+                                                <DropdownMenuItem
+                                                    onClick={() => navigate(`/${component}/${row.id}`)}>
+                                                    <Eye />
+                                                    Visualizar
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <Edit />
+                                                    Editar
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <X className="text-red-500" />
+                                                    Inativar
+                                                </DropdownMenuItem>
+                                            </ DropdownMenuGroup>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
+                            </td>
+                        )}
                     </tr>
                 ))}
             </tbody>

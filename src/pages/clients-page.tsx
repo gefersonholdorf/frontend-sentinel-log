@@ -78,7 +78,7 @@ export function ClientsPage() {
 
             <InputPrimary placeholder="Buscar clientes..." />
 
-            <DataTable columns={columns} data={clients} component="clients" />
+            <DataTable columns={columns} data={clients} component="clients" haveAction={true} />
         </div>
     )
 }
