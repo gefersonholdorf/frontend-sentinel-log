@@ -5,6 +5,7 @@ import { Outlet } from "react-router";
 import { useTheme } from "./context/theme-context";
 import { Menu } from "./components/menu";
 import { UserPanel } from "./components/user-panel";
+import { Separator } from "./components/ui/separator";
 
 export function Layout() {
     const [open, setOpen] = useState(true)
@@ -44,15 +45,17 @@ export function Layout() {
                             </div>
                         </div>
                     </div>
+                    <Separator className="h-3" />
                     <div>
                         <Menu open={open} />
                     </div>
                 </div>
-                <div>
+                <div className="flex flex-col gap-4">
+                    <Separator className="h-3" />
                     <UserPanel open={open} theme={theme} />
                 </div>
             </div>
-            <div className="p-4">
+            <div className="w-full">
                 <Outlet />
             </div>
         </div >

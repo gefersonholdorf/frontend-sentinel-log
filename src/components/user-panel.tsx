@@ -2,7 +2,7 @@ import { LogOut } from "lucide-react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const variants = tv({
-    base: 'flex w-full items-center gap-2 rounded-sm px-2 py-3 transition-all duration-300',
+    base: 'flex w-full items-center gap-4 rounded-sm px-2 py-3 transition-all duration-300',
     variants: {
         theme: {
             light: 'bg-gray-200',
