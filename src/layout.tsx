@@ -7,7 +7,7 @@ import { Menu } from "./components/menu";
 import { UserPanel } from "./components/user-panel";
 
 export function Layout() {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(true)
     const { theme } = useTheme()
 
     function handleSetOpen() {

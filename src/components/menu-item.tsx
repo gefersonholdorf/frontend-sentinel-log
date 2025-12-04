@@ -1,6 +1,7 @@
 import { useTheme } from "@/context/theme-context"
 import type { VariantProps } from "class-variance-authority"
 import { type ReactNode } from "react"
+import { useNavigate } from "react-router"
 import { tv } from "tailwind-variants"
 
 const menuItemStyles = tv({
@@ -49,13 +50,16 @@ type StateVariant = VariantProps<typeof menuItemStyles>
 interface MenuItemProps extends StateVariant {
     title: string
     icon: ReactNode
+    url: string
     open: boolean
 }
 
-export function MenuItem({ title, icon, open, state, ...props }: MenuItemProps) {
+export function MenuItem({ title, icon, open, url, state, ...props }: MenuItemProps) {
     const { theme } = useTheme()
+    const navigate = useNavigate()
     return (
         <div
+            onClick={() => navigate(url)}
             className={menuItemStyles({ state, theme, open })}
             {...props}
         >
