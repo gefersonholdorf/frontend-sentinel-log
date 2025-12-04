@@ -8,7 +8,7 @@ import { FileText, Globe, User } from "lucide-react";
 
 export function DashboardPage() {
     return (
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 mb-4">
             <TitlePage title="Dashboard" description="Visão geral da sua plataforma de observabilidade" />
 
             <div className="grid grid-cols-4 gap-4">

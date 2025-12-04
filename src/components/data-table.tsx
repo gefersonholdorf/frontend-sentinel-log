@@ -1,6 +1,11 @@
 import { useTheme } from "@/context/theme-context";
 import { Edit, EllipsisVertical, Eye, X } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { useNavigate } from "react-router";
+
+interface WithId {
+    id: string | number;
+}
 
 export interface DataTableColumn<T> {
     header: string;
@@ -8,13 +13,16 @@ export interface DataTableColumn<T> {
     render?: (value: T[keyof T], row: T) => React.ReactNode;
 }
 
-export interface DataTableProps<T> {
+export interface DataTableProps<T extends WithId> {
     columns: DataTableColumn<T>[];
     data: T[];
+    component: string
 }
 
-export function DataTable<T>({ columns, data }: DataTableProps<T>) {
+export function DataTable<T extends WithId>({ columns, data, component }: DataTableProps<T>) {
     const { theme } = useTheme()
+    const navigate = useNavigate()
+
     return (
         <table className={`
                             w-full outline rounded-lg shadow-primary
@@ -55,7 +63,8 @@ export function DataTable<T>({ columns, data }: DataTableProps<T>) {
                                     <DropdownMenuContent align="start">
                                         <DropdownMenuLabel>Ações</DropdownMenuLabel>
                                         <DropdownMenuGroup>
-                                            <DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => navigate(`/${component}/${row.id}`)}>
                                                 <Eye />
                                                 Visualizar
                                             </DropdownMenuItem>

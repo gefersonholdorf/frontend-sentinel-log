@@ -2,11 +2,11 @@ import { LogOut } from "lucide-react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 const variants = tv({
-    base: 'flex w-full items-center gap-4 rounded-sm px-2 py-3 transition-all duration-300',
+    base: 'flex w-full items-center gap-4 rounded-lg px-2 py-3 transition-all duration-300',
     variants: {
         theme: {
-            light: 'bg-gray-200',
-            dark: 'bg-zinc-800 text-white'
+            light: 'bg-gray-200/30 hover:bg-gray-200 border border-gray-200 hover:border-gray-300',
+            dark: 'bg-zinc-800/30 hover:bg-zinc-800 border border-zinc-700 hover:border-zinc-600 text-white'
         },
         open: {
             true: '',
@@ -57,8 +57,8 @@ export function UserPanel({ open, theme }: UserPanelProps) {
             {open && (
                 <>
                     <div className="flex flex-col flex-1 min-w-0">
-                        <span className="truncate text-sm font-semibold">GefersonHoldorf Holdorf</span>
-                        <span className="truncate text-[.8rem] text-gray-500">geferson@gmail.com.br</span>
+                        <span className="transition-all duration-700 truncate text-sm font-semibold">GefersonHoldorf Holdorf</span>
+                        <span className={`transition-all duration-700 truncate text-[.8rem] ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} `}>geferson@gmail.com.br</span>
                     </div>
                     <LogOut size={20} className="hover:text-red-500 cursor-pointer shrink-0" />
                 </>

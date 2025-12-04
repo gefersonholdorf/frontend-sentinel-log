@@ -6,6 +6,7 @@ import { ClientsPage } from "./pages/clients-page";
 import { LogsPage } from "./pages/logs-page";
 import { ReportsPage } from "./pages/reports-page";
 import { SettingsPage } from "./pages/settings-page";
+import { ClientDetailPage } from "./pages/client-detail-page";
 
 export function App() {
   return (
@@ -20,6 +21,8 @@ export function App() {
           <Route path="/logs" element={<LogsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+
+          <Route path="/clients/:id" element={<ClientDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

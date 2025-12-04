@@ -4,9 +4,10 @@ interface CardProps {
     title: string
     value: string
     children: React.ReactNode
+    className?: string
 }
 
-export function Card({ title, value, children }: CardProps) {
+export function Card({ title, value, children, className }: CardProps) {
     const { theme } = useTheme()
     return (
         <div className={`
@@ -15,7 +16,7 @@ export function Card({ title, value, children }: CardProps) {
                     `}>
             <div className="flex flex-col items-start justify-center gap-2">
                 <span className="font-medium text-sm">{title}</span>
-                <span className="font-semibold text-3xl">{value}</span>
+                <span className={`font-semibold text-3xl ${className}`}>{value}</span>
             </div>
             {children}
         </div>

@@ -2,6 +2,7 @@ import { TitlePage } from "@/components/ui/title-page";
 import { Button } from "@/components/ui/button";
 import { Globe, Plus } from "lucide-react";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
+import { InputPrimary } from "@/components/ui/input-primary";
 
 interface Api {
     id: number
@@ -10,6 +11,7 @@ interface Api {
     status: 'active' | 'inactive'
     logs: number
     token: string
+    tokenExpiration: string
     createdAt: string
 }
 
@@ -43,6 +45,7 @@ const columns: DataTableColumn<Api>[] = [
             )
         }
     },
+    { header: "Expira Em", accessor: 'tokenExpiration' },
     {
         header: "Status",
         accessor: 'status',
@@ -69,6 +72,7 @@ const apis: Api[] = [
         status: "active",
         logs: 1523,
         token: "TK-4f82a9c3ba",
+        tokenExpiration: "03/12/2025",
         createdAt: "03/12/2025",
     },
     {
@@ -78,6 +82,7 @@ const apis: Api[] = [
         status: "inactive",
         logs: 987,
         token: "TK-83bd17f94c",
+        tokenExpiration: "03/12/2025",
         createdAt: "26/11/2025",
     },
     {
@@ -87,6 +92,7 @@ const apis: Api[] = [
         status: "active",
         logs: 2310,
         token: "TK-f182c493aa",
+        tokenExpiration: "03/12/2025",
         createdAt: "01/12/2025",
     },
     {
@@ -96,6 +102,7 @@ const apis: Api[] = [
         status: "active",
         logs: 411,
         token: "TK-91ac3bb4d2",
+        tokenExpiration: "03/12/2025",
         createdAt: "22/10/2025",
     },
     {
@@ -105,6 +112,7 @@ const apis: Api[] = [
         status: "inactive",
         logs: 73,
         token: "TK-cc9e31b772",
+        tokenExpiration: "03/12/2025",
         createdAt: "15/09/2025",
     },
     {
@@ -114,6 +122,7 @@ const apis: Api[] = [
         status: "active",
         logs: 1897,
         token: "TK-a3910ee93b",
+        tokenExpiration: "03/12/2025",
         createdAt: "05/12/2025",
     },
     {
@@ -123,6 +132,7 @@ const apis: Api[] = [
         status: "active",
         logs: 3421,
         token: "TK-9912aa7e51",
+        tokenExpiration: "03/12/2025",
         createdAt: "28/11/2025",
     },
     {
@@ -132,6 +142,7 @@ const apis: Api[] = [
         status: "inactive",
         logs: 245,
         token: "TK-7af39d4aac",
+        tokenExpiration: "03/12/2025",
         createdAt: "20/08/2025",
     },
     {
@@ -141,6 +152,7 @@ const apis: Api[] = [
         status: "active",
         logs: 1004,
         token: "TK-dfa991a0e5",
+        tokenExpiration: "03/12/2025",
         createdAt: "17/11/2025",
     },
     {
@@ -150,6 +162,7 @@ const apis: Api[] = [
         status: "active",
         logs: 2756,
         token: "TK-4fe81cd294",
+        tokenExpiration: "03/12/2025",
         createdAt: "09/09/2025",
     },
 ];
@@ -164,7 +177,9 @@ export function APIsPage() {
                 </Button>
             </TitlePage>
 
-            <DataTable columns={columns} data={apis} />
+            <InputPrimary placeholder="Buscar APIs..." />
+
+            <DataTable columns={columns} data={apis} component="apis" />
         </div>
     )
 }

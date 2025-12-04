@@ -1,5 +1,6 @@
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
+import { InputPrimary } from "@/components/ui/input-primary";
 import { TitlePage } from "@/components/ui/title-page";
 import { Globe, Plus, User } from "lucide-react";
 
@@ -75,7 +76,9 @@ export function ClientsPage() {
                 </Button>
             </TitlePage>
 
-            <DataTable columns={columns} data={clients} />
+            <InputPrimary placeholder="Buscar clientes..." />
+
+            <DataTable columns={columns} data={clients} component="clients" />
         </div>
     )
 }
