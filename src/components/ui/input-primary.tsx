@@ -13,7 +13,7 @@ export function InputPrimary({ ...props }: InputPrimaryProps) {
         `}>
             <Search className={`h-4 w-4 text-muted-foreground ${theme === 'light' ? 'bg-gray-100/60 outline-gray-200' : 'bg-zinc-900 border-zinc-700'}`} />
             <Input
-                className={`flex-1 border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent`}
+                className={`flex-1 border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0`}
                 {...props}
             />
         </div>

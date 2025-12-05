@@ -59,9 +59,11 @@ export function ApiDetailPage() {
     const { theme } = useTheme()
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const short = String('sk_live_fnt_8x7kJm9nPq2rT5vW').length > 10 ? String('sk_live_fnt_8x7kJm9nPq2rT5vW').slice(0, 15) + "..." : 'sk_live_fnt_8x7kJm9nPq2rT5vW';
+
     const handleCopy = () => {
         if (inputRef.current) {
-            navigator.clipboard.writeText(inputRef.current.value)
+            navigator.clipboard.writeText('sk_live_fnt_8x7kJm9nPq2rT5vW')
         }
     }
 
@@ -97,7 +99,7 @@ export function ApiDetailPage() {
             >
                 <div className="flex w-full items-center justify-between gap-4">
                     <Key size={20} />
-                    <Input ref={inputRef} disabled={true} value={'sk_live_fnt_8x7kJm9nPq2rT5vW'} />
+                    <Input ref={inputRef} disabled={true} value={short.toString()} />
                     <Button
                         onClick={handleCopy}
                     >
@@ -136,7 +138,7 @@ export function ApiDetailPage() {
                 </div>
             </div>
 
-            <DataTable columns={columns} data={logs} component="apis" haveAction={false} />
+            <DataTable columns={columns} data={logs} component="apis" haveAction={false} onOpenEditModal={() => console.log()} />
         </div>
     )
 }

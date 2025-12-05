@@ -22,7 +22,7 @@ export function LoginPage() {
             <h2 className="text-3xl font-bold">Seja Bem-Vindo ao SentinelLog</h2>
             <p className={`text-medium text-gray-400 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Acesse agora seu sistema de monitoramento/logs</p>
             <Card className={`
-                        w-3/7 flex items-center justify-between gap-6 p-8 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
+                        w-2/6 flex items-center justify-between gap-6 p-8 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
                         ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-300'}
                     `}>
                 <div className="w-full">

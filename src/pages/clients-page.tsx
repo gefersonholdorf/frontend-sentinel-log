@@ -1,8 +1,11 @@
+import { CreateNewClientModal } from "@/components/client/create-new-client-modal";
+import { EditClientModal } from "@/components/client/edit-client-modal";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { InputPrimary } from "@/components/ui/input-primary";
 import { TitlePage } from "@/components/ui/title-page";
 import { Globe, Plus, User } from "lucide-react";
+import { useState } from "react";
 
 interface Client {
     id: number
@@ -67,18 +70,28 @@ const clients: Client[] = [
 ]
 
 export function ClientsPage() {
+    const [openEditModal, setOpenEditModal] = useState(false)
+
+    function handleSetOpenEditModal() {
+        setOpenEditModal(!openEditModal)
+    }
+
     return (
         <div className="p-6 space-y-6">
             <TitlePage title="Clientes" description="Gerencie seus clientes e suas APIs">
-                <Button className="bg-primary-background hover:bg-sky-600 text-white">
-                    <Plus />
-                    Adicionar Cliente
-                </Button>
+                <CreateNewClientModal>
+                    <Button className="bg-primary-background hover:bg-sky-600 text-white">
+                        <Plus />
+                        Adicionar Cliente
+                    </Button>
+                </CreateNewClientModal>
             </TitlePage>
 
             <InputPrimary placeholder="Buscar clientes..." />
 
-            <DataTable columns={columns} data={clients} component="clients" haveAction={true} />
+            <DataTable columns={columns} data={clients} component="clients" haveAction={true} onOpenEditModal={handleSetOpenEditModal} />
+
+            <EditClientModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
         </div>
     )
 }

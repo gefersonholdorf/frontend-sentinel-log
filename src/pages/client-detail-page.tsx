@@ -1,9 +1,11 @@
+import { EditClientModal } from "@/components/client/edit-client-modal";
 import { Card } from "@/components/dashboards/card";
 import { ChartLogVolume } from "@/components/dashboards/chart-log-volume";
 import { ChartLogsApi } from "@/components/dashboards/chart-logs-api";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Edit, Eye, FileText, Globe, User } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 interface Api {
@@ -87,6 +89,11 @@ const apis: Api[] = [
 
 export function ClientDetailPage() {
     const navigate = useNavigate()
+    const [openEditModal, setOpenEditModal] = useState(false)
+
+    function handleSetOpenEditModal() {
+        setOpenEditModal(!openEditModal)
+    }
     return (
         <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
@@ -105,7 +112,8 @@ export function ClientDetailPage() {
                         <p className="text-sm text-gray-500">Sistema de gestão hospitalar</p>
                     </div>
                 </div>
-                <Button>
+                <Button
+                    onClick={() => handleSetOpenEditModal()}>
                     <Edit />
                     Editar
                 </Button>
@@ -148,7 +156,9 @@ export function ClientDetailPage() {
                 </div>
             </div>
 
-            <DataTable columns={columns} data={apis} component="apis" haveAction={false} />
+            <DataTable columns={columns} data={apis} component="apis" haveAction={false} onOpenEditModal={() => console.log()} />
+
+            <EditClientModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
         </div>
     )
 }

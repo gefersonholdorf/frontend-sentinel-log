@@ -18,9 +18,10 @@ export interface DataTableProps<T extends WithId> {
     data: T[];
     component: string
     haveAction: boolean
+    onOpenEditModal: () => void
 }
 
-export function DataTable<T extends WithId>({ columns, data, component, haveAction }: DataTableProps<T>) {
+export function DataTable<T extends WithId>({ columns, data, component, haveAction, onOpenEditModal }: DataTableProps<T>) {
     const { theme } = useTheme()
     const navigate = useNavigate()
 
@@ -72,7 +73,8 @@ export function DataTable<T extends WithId>({ columns, data, component, haveActi
                                                     <Eye />
                                                     Visualizar
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => onOpenEditModal()}>
                                                     <Edit />
                                                     Editar
                                                 </DropdownMenuItem>

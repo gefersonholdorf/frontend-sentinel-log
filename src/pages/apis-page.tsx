@@ -242,7 +242,7 @@ export function APIsPage() {
 
             <InputPrimary placeholder="Buscar APIs..." />
 
-            <DataTable columns={columns} data={apis} component="apis" haveAction={true} />
+            <DataTable columns={columns} data={apis} component="apis" haveAction={true} onOpenEditModal={() => console.log()} />
         </div>
     )
 }
