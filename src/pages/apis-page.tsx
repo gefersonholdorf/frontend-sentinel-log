@@ -6,6 +6,7 @@ import { InputPrimary } from "@/components/ui/input-primary";
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/pt-br"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 dayjs.extend(relativeTime)
 dayjs.locale("pt-br")
@@ -56,24 +57,45 @@ const columns: DataTableColumn<Api>[] = [
         accessor: 'tokenExpiration',
         render: (value) => {
             const daysRemaining = dayjs(value).diff(dayjs(), 'day')
-            console.log(daysRemaining)
+
             return (
                 <div>
                     {daysRemaining <= 3 && (
                         <span className="flex gap-2 items-center">
-                            <CircleX className="text-red-500" size={15} />
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <CircleX className="text-red-500" size={15} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Token expirado</p>
+                                </TooltipContent>
+                            </Tooltip>
                             {dayjs(value).format('DD/MM/YYYY')}
                         </span>
                     )}
                     {(daysRemaining <= 15 && daysRemaining > 3) && (
                         <span className="flex gap-2 items-center">
-                            <CircleX className="text-amber-500" size={15} />
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <CircleX className="text-amber-500" size={15} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Token expira em breve</p>
+                                </TooltipContent>
+                            </Tooltip>
                             {dayjs(value).format('DD/MM/YYYY')}
                         </span>
                     )}
                     {daysRemaining > 15 && (
                         <span className="flex gap-2 items-center">
-                            <CircleCheck className="text-emerald-500" size={15} />
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <CircleCheck className="text-emerald-500" size={15} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Token válido</p>
+                                </TooltipContent>
+                            </Tooltip>
                             {dayjs(value).format('DD/MM/YYYY')}
                         </span>
                     )}

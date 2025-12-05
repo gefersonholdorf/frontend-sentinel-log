@@ -6,6 +6,11 @@ import { useTheme } from "./context/theme-context";
 import { Menu } from "./components/menu";
 import { UserPanel } from "./components/user-panel";
 import { Separator } from "./components/ui/separator";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export function Layout() {
     const [open, setOpen] = useState(true)
@@ -35,13 +40,38 @@ export function Layout() {
                             </div>
                         )}
 
-                        <div className="flex items-center gap-1">
-                            <ThemeSwitcher />
+                        <div className="flex items-center justify-center gap-1">
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <ThemeSwitcher />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Mudar para tema {theme === 'light' ? 'escuro' : 'claro'}</p>
+                                </TooltipContent>
+                            </Tooltip>
                             <div
                                 className="cursor-pointer hover:text-primary-background"
                                 onClick={handleSetOpen}
                             >
-                                {open ? <ChevronsLeft size={20} /> : <ChevronsRight size={20} />}
+                                {open ? (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <ChevronsLeft size={20} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Recolher menu</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                ) : (
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <ChevronsRight size={20} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Abrir menu</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -56,8 +86,8 @@ export function Layout() {
                     {open && (
                         <>
                             <Separator className="h-3" />
-                            <footer className="flex items-center justify-center gap-2 text-center text-xs opacity-70">
-                                <Code size={16} />
+                            <footer className="truncate flex items-center justify-center gap-2 text-center text-xs opacity-70">
+                                <Code size={20} />
                                 Desenvolvido por Geferson Holdorf
                             </footer>
                         </>

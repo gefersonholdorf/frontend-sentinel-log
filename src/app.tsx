@@ -8,12 +8,13 @@ import { ReportsPage } from "./pages/reports-page";
 import { SettingsPage } from "./pages/settings-page";
 import { ClientDetailPage } from "./pages/client-detail-page";
 import { ApiDetailPage } from "./pages/api-detail-page";
+import { LoginPage } from "./pages/login";
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route index element={<Home />} /> */}
+        <Route path="/login" element={<LoginPage />} />
 
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<DashboardPage />} />

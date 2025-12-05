@@ -1,5 +1,7 @@
 import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
 import { tv, type VariantProps } from "tailwind-variants";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 const variants = tv({
     base: 'flex w-full items-center gap-4 rounded-lg px-2 py-3 transition-all duration-300',
@@ -44,6 +46,7 @@ interface UserPanelProps extends Variants {
 }
 
 export function UserPanel({ open, theme }: UserPanelProps) {
+    const navigate = useNavigate()
     return (
         <div className={variants({ theme, open })}>
             <div className="w-8 h-8 rounded-full overflow-hidden shrink-0">
@@ -60,7 +63,14 @@ export function UserPanel({ open, theme }: UserPanelProps) {
                         <span className="transition-all duration-700 truncate text-sm font-semibold">GefersonHoldorf Holdorf</span>
                         <span className={`transition-all duration-700 truncate text-[.8rem] ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} `}>geferson@gmail.com.br</span>
                     </div>
-                    <LogOut size={20} className="hover:text-red-500 cursor-pointer shrink-0" />
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <LogOut onClick={() => navigate('/login')} size={20} className="hover:text-red-500 cursor-pointer shrink-0" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Sair do sistema</p>
+                        </TooltipContent>
+                    </Tooltip>
                 </>
             )}
         </div>
