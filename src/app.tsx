@@ -4,7 +4,7 @@ import { Layout } from "./layout";
 import { APIsPage } from "./pages/apis-page";
 import { ClientsPage } from "./pages/clients-page";
 import { LogsPage } from "./pages/logs-page";
-import { ReportsPage } from "./pages/reports-page";
+import { UsersPage } from "./pages/users-page";
 import { SettingsPage } from "./pages/settings-page";
 import { ClientDetailPage } from "./pages/client-detail-page";
 import { ApiDetailPage } from "./pages/api-detail-page";
@@ -21,7 +21,7 @@ export function App() {
           <Route path="/apis" element={<APIsPage />} />
           <Route path="/clients" element={<ClientsPage />} />
           <Route path="/logs" element={<LogsPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/users" element={<UsersPage />} />
           <Route path="/settings" element={<SettingsPage />} />
 
           <Route path="/clients/:id" element={<ClientDetailPage />} />
