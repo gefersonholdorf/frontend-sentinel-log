@@ -1,9 +1,34 @@
-import { Button } from "./components/ui/button";
+import { BrowserRouter, Routes, Route } from "react-router";
+import { DashboardPage } from "./pages/dashboard-page";
+import { Layout } from "./layout";
+import { APIsPage } from "./pages/apis-page";
+import { ClientsPage } from "./pages/clients-page";
+import { LogsPage } from "./pages/logs-page";
+import { ReportsPage } from "./pages/reports-page";
+import { SettingsPage } from "./pages/settings-page";
+import { ClientDetailPage } from "./pages/client-detail-page";
+import { ApiDetailPage } from "./pages/api-detail-page";
+import { LoginPage } from "./pages/login";
 
 export function App() {
   return (
-    <div>
-      <Button>Hello World</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/apis" element={<APIsPage />} />
+          <Route path="/clients" element={<ClientsPage />} />
+          <Route path="/logs" element={<LogsPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+
+          <Route path="/clients/:id" element={<ClientDetailPage />} />
+          <Route path="/apis/:id" element={<ApiDetailPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+
   )
 }
