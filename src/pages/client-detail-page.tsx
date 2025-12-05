@@ -156,7 +156,7 @@ export function ClientDetailPage() {
                 </div>
             </div>
 
-            <DataTable columns={columns} data={apis} component="apis" haveAction={false} onOpenEditModal={() => console.log()} />
+            <DataTable columns={columns} data={apis} component="apis" haveAction={false} onOpenEditModal={() => console.log()} hasPagination={false} />
 
             <EditClientModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
         </div>

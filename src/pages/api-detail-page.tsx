@@ -4,10 +4,19 @@ import { ChartLogVolume } from "@/components/dashboards/chart-log-volume";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/theme-context";
-import { ArrowLeft, Clock, Copy, Edit, Eye, FileText, Globe, Key } from "lucide-react";
+import { ArrowLeft, Calendar, CircleCheck, CircleX, Clock, Copy, Edit, Eye, FileText, Globe, IterationCcw, Key, Link, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { EditAPIModal } from "@/components/api/edit-api-modal";
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import "dayjs/locale/pt-br"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { RenewTokenModal } from "@/components/api/renew-token-modal";
+
+dayjs.extend(relativeTime)
+dayjs.locale("pt-br")
 
 interface Log {
     id: number
@@ -23,6 +32,9 @@ const columns: DataTableColumn<Log>[] = [
     {
         header: "Data/Hora",
         accessor: 'createdAt',
+        render: (value) => (
+            <span>{dayjs(value).format('DD/MM/YYYY HH:MM:ss')}</span>
+        )
     }
 ];
 
@@ -59,12 +71,25 @@ export function ApiDetailPage() {
     const { theme } = useTheme()
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const daysRemaining = dayjs(new Date()).diff(dayjs(), 'day')
+
     const short = String('sk_live_fnt_8x7kJm9nPq2rT5vW').length > 10 ? String('sk_live_fnt_8x7kJm9nPq2rT5vW').slice(0, 15) + "..." : 'sk_live_fnt_8x7kJm9nPq2rT5vW';
 
     const handleCopy = () => {
         if (inputRef.current) {
             navigator.clipboard.writeText('sk_live_fnt_8x7kJm9nPq2rT5vW')
         }
+    }
+
+    const [openEditModal, setOpenEditModal] = useState(false)
+    const [openRenewModal, setOpenRenewModal] = useState(false)
+
+    function handleSetOpenEditModal() {
+        setOpenEditModal(!openEditModal)
+    }
+
+    function handleSetOpenRenewModal() {
+        setOpenRenewModal(!openRenewModal)
     }
 
     return (
@@ -85,26 +110,119 @@ export function ApiDetailPage() {
                         <p className="text-sm text-gray-500">Cliente: E-commerce Plus</p>
                     </div>
                 </div>
-                <Button>
-                    <Edit />
-                    Editar
-                </Button>
+                <div className="flex gap-2">
+                    <Button
+                        onClick={handleSetOpenEditModal}>
+                        <Edit />
+                        Editar
+                    </Button>
+                    <Button
+                        className="bg-primary-background hover:bg-sky-600 text-white"
+                        onClick={handleSetOpenRenewModal}>
+                        <RotateCcw />
+                        Renovar Token
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={handleSetOpenEditModal}
+                    >
+                        <IterationCcw />
+                        Revogar Token
+                    </Button>
+                </div>
             </div>
 
             <CardComponent
                 className={`
-                    flex items-center justify-center gap-2 p-4 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
+                    flex items-center justify-center gap-3 p-4 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.01]
                     ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-300'}
                 `}
             >
                 <div className="flex w-full items-center justify-between gap-4">
-                    <Key size={20} />
+                    <div className="flex items-center gap-2 w-50">
+                        <Link className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} size={15} />
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>URL</span>
+                    </div>
+                    <Input ref={inputRef} disabled={true} value={'POST http://localhost:6333/api/v1/logs'} />
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={handleCopy}
+                            >
+                                <Copy />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Copiar</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </div>
+                <div className="flex w-full items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 w-50">
+                        <Key className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} size={15} />
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Token</span>
+                    </div>
                     <Input ref={inputRef} disabled={true} value={short.toString()} />
-                    <Button
-                        onClick={handleCopy}
-                    >
-                        <Copy />Copiar
-                    </Button>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={handleCopy}
+                            >
+                                <Copy />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Copiar</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </div>
+                <div className="flex w-full items-center justify-start gap-4">
+                    <div className="flex items-center gap-2 w-42">
+                        <Calendar className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} size={15} />
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Data de Expiração</span>
+                    </div>
+                    <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                        {daysRemaining <= 3 && (
+                            <span className="flex gap-2 items-center">
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <CircleX className="text-red-500" size={15} />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Token expirado</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                                {dayjs(new Date()).format('DD/MM/YYYY HH:MM:ss')}
+                            </span>
+                        )}
+                        {(daysRemaining <= 15 && daysRemaining > 3) && (
+                            <span className="flex gap-2 items-center">
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <CircleX className="text-amber-500" size={15} />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Token expira em breve</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                                {dayjs(new Date()).format('DD/MM/YYYY HH:MM:ss')}
+                            </span>
+                        )}
+                        {daysRemaining > 15 && (
+                            <span className="flex gap-2 items-center">
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <CircleCheck className="text-emerald-500" size={15} />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Token válido</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                                {dayjs(new Date()).format('DD/MM/YYYY HH:MM:ss')}
+                            </span>
+                        )}
+                    </div>
+                    <div></div>
                 </div>
             </CardComponent>
 
@@ -138,7 +256,10 @@ export function ApiDetailPage() {
                 </div>
             </div>
 
-            <DataTable columns={columns} data={logs} component="apis" haveAction={false} onOpenEditModal={() => console.log()} />
+            <DataTable columns={columns} data={logs} component="apis" haveAction={false} onOpenEditModal={() => console.log()} hasPagination={false} />
+
+            <EditAPIModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
+            <RenewTokenModal openModal={openRenewModal} onSetOpenRenewTokenModal={handleSetOpenRenewModal} />
         </div>
     )
 }

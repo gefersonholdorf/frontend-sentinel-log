@@ -29,7 +29,6 @@ interface EditClientModalProps {
 }
 
 export function EditClientModal({ openModal, onSetOpenEditModal }: EditClientModalProps) {
-    console.log(openModal)
     return (
         <Dialog open={openModal} onOpenChange={onSetOpenEditModal}>
             <form>
@@ -40,7 +39,7 @@ export function EditClientModal({ openModal, onSetOpenEditModal }: EditClientMod
                             Editar dados do cliente
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4">
+                    <div className="grid gap-4 space-y-3">
                         <div className="grid gap-3">
                             <Label>Nome</Label>
                             <Input placeholder="Nome do cliente..." />
@@ -65,11 +64,11 @@ export function EditClientModal({ openModal, onSetOpenEditModal }: EditClientMod
                             </Select>
                         </div>
                     </div>
-                    <DialogFooter>
+                    <DialogFooter className="mt-6">
                         <DialogClose asChild>
                             <Button variant="outline"><X />Cancelar</Button>
                         </DialogClose>
-                        <Button type="submit"><Plus />Salvar</Button>
+                        <Button className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Salvar</Button>
                     </DialogFooter>
                 </DialogContent>
             </form>

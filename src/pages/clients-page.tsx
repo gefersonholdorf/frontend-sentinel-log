@@ -89,7 +89,7 @@ export function ClientsPage() {
 
             <InputPrimary placeholder="Buscar clientes..." />
 
-            <DataTable columns={columns} data={clients} component="clients" haveAction={true} onOpenEditModal={handleSetOpenEditModal} />
+            <DataTable columns={columns} data={clients} hasPagination={true} component="clients" haveAction={true} onOpenEditModal={handleSetOpenEditModal} />
 
             <EditClientModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
         </div>

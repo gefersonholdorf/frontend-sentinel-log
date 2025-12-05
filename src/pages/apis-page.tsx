@@ -7,6 +7,10 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/pt-br"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CreateNewAPIModal } from "@/components/api/create-new-api-modal";
+import { useState } from "react";
+import { EditAPIModal } from "@/components/api/edit-api-modal";
+import { RenewTokenModal } from "@/components/api/renew-token-modal";
 
 dayjs.extend(relativeTime)
 dayjs.locale("pt-br")
@@ -32,7 +36,7 @@ const columns: DataTableColumn<Api>[] = [
                 <div className="flex p-2 rounded-lg bg-primary-background/10">
                     <Globe className="size-4 text-primary-background" />
                 </div>
-                {dayjs(value).format('DD/MM/YYYY')}
+                {value.toString()}
             </span>
         )
     },
@@ -231,18 +235,34 @@ const apis: Api[] = [
 ];
 
 export function APIsPage() {
+    const [openEditModal, setOpenEditModal] = useState(false)
+    const [openRenewTokenModal, setOpenRenewTokenModal] = useState(false)
+
+    function handleSetOpenEditModal() {
+        setOpenEditModal(!openEditModal)
+    }
+
+    function handleSetOpenRenewTokenModal() {
+        setOpenRenewTokenModal(!openRenewTokenModal)
+    }
+
     return (
         <div className="p-6 space-y-6">
             <TitlePage title="APIs" description="Gerencie suas APIs e tokens de acesso">
-                <Button className="bg-primary-background hover:bg-sky-600 text-white">
-                    <Plus />
-                    Adicionar API
-                </Button>
+                <CreateNewAPIModal>
+                    <Button className="bg-primary-background hover:bg-sky-600 text-white">
+                        <Plus />
+                        Adicionar API
+                    </Button>
+                </CreateNewAPIModal>
             </TitlePage>
 
             <InputPrimary placeholder="Buscar APIs..." />
 
-            <DataTable columns={columns} data={apis} component="apis" haveAction={true} onOpenEditModal={() => console.log()} />
+            <DataTable columns={columns} data={apis} hasPagination={true} component="apis" haveAction={true} onOpenEditModal={handleSetOpenEditModal} onOpenRenewTokenModal={handleSetOpenRenewTokenModal} />
+
+            <EditAPIModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
+            <RenewTokenModal openModal={openRenewTokenModal} onSetOpenRenewTokenModal={handleSetOpenRenewTokenModal} />
         </div>
     )
 }
