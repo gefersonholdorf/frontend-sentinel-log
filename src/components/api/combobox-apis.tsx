@@ -15,49 +15,49 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-const clients = [
+const apis = [
     {
-        value: "quantumsoft",
-        label: "QuantumSoft Solutions"
+        value: "auth-service",
+        label: "Auth Service"
     },
     {
-        value: "nova-tech",
-        label: "NovaTech Systems"
+        value: "billing-api",
+        label: "Billing API"
     },
     {
-        value: "cyberwave",
-        label: "CyberWave Technologies"
+        value: "notification-center",
+        label: "Notification Center"
     },
     {
-        value: "bluecore",
-        label: "BlueCore Innovations"
+        value: "inventory-service",
+        label: "Inventory Service"
     },
     {
-        value: "vertex-digital",
-        label: "Vertex Digital Labs"
+        value: "order-gateway",
+        label: "Order Gateway"
     },
     {
-        value: "skybridge",
-        label: "SkyBridge Data Services"
+        value: "user-profile",
+        label: "User Profile API"
     },
     {
-        value: "primecode",
-        label: "PrimeCode Technologies"
+        value: "payment-processor",
+        label: "Payment Processor"
     },
     {
-        value: "stellarworks",
-        label: "StellarWorks IT"
+        value: "analytics-engine",
+        label: "Analytics Engine"
     },
     {
-        value: "neuronix",
-        label: "Neuronix Software"
+        value: "reporting-api",
+        label: "Reporting API"
     },
     {
-        value: "infraone",
-        label: "InfraOne Cloud Solutions"
+        value: "shipment-service",
+        label: "Shipment Service"
     }
-]
-export function ComboboxClients() {
+];
+export function ComboboxApis() {
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState("")
     return (
@@ -70,31 +70,31 @@ export function ComboboxClients() {
                     className="w-full justify-between bg-background hover:bg-background text-gray-500 hover:text-gray-500 dark:bg-background dark:hover:bg-background dark:text-gray-400"
                 >
                     {value
-                        ? clients.find((clients) => clients.value === value)?.label
-                        : "Selecione um cliente..."}
+                        ? apis.find((apis) => apis.value === value)?.label
+                        : "Selecione uma api..."}
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0 bg-background">
+            <PopoverContent className="w-full p-0">
                 <Command>
-                    <CommandInput placeholder="Selecione um cliente..." className="h-9" />
+                    <CommandInput placeholder="Selecione uma api..." className="h-9" />
                     <CommandList>
-                        <CommandEmpty>No clients found.</CommandEmpty>
+                        <CommandEmpty>No apis found.</CommandEmpty>
                         <CommandGroup>
-                            {clients.map((clients) => (
+                            {apis.map((apis) => (
                                 <CommandItem
-                                    key={clients.value}
-                                    value={clients.value}
+                                    key={apis.value}
+                                    value={apis.value}
                                     onSelect={(currentValue) => {
                                         setValue(currentValue === value ? "" : currentValue)
                                         setOpen(false)
                                     }}
                                 >
-                                    {clients.label}
+                                    {apis.label}
                                     <Check
                                         className={cn(
                                             "ml-auto",
-                                            value === clients.value ? "opacity-100" : "opacity-0"
+                                            value === apis.value ? "opacity-100" : "opacity-0"
                                         )}
                                     />
                                 </CommandItem>

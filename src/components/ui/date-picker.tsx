@@ -26,7 +26,7 @@ export function DatePicker({ title }: DatePickerProps) {
                 <Button
                     variant="outline"
                     data-empty={!date}
-                    className="data-[empty=true]:text-muted-foreground w-[280px] justify-start text-left font-normal"
+                    className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal bg-background hover:bg-background text-gray-500 hover:text-gray-500 dark:bg-background dark:hover:bg-background dark:text-gray-400"
                 >
                     <CalendarIcon />
                     {date
