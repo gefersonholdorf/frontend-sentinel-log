@@ -9,11 +9,13 @@ import { SettingsPage } from "./pages/settings-page";
 import { ClientDetailPage } from "./pages/client-detail-page";
 import { ApiDetailPage } from "./pages/api-detail-page";
 import { LoginPage } from "./pages/login";
+import HomePage from "./pages/home-page";
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
 
         <Route element={<Layout />}>
