@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -16,12 +15,9 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs";
 import { TitlePage } from "@/components/ui/title-page";
-import { useTheme } from "@/context/theme-context";
 import { Lock, LockIcon, Save, User } from "lucide-react";
 
 export function SettingsPage() {
-    const { theme } = useTheme()
-
     return (
         <div className=" p-6 space-y-6">
             <TitlePage title="Configurações" description="Gerencie seu perfil e preferências" />
