@@ -4,7 +4,7 @@ import { ChartLogVolume } from "@/components/dashboards/chart-log-volume";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/theme-context";
-import { ArrowLeft, Calendar, CircleCheck, CircleX, Clock, Copy, Edit, Eye, FileText, Globe, IterationCcw, Key, Link, RotateCcw } from "lucide-react";
+import { ArrowLeft, Book, Calendar, CircleCheck, CircleX, Clock, Copy, Edit, Eye, FileText, Globe, IterationCcw, Key, Link, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
@@ -111,6 +111,13 @@ export function ApiDetailPage() {
                     </div>
                 </div>
                 <div className="flex gap-2">
+                    <Button
+                        variant="link"
+                        onClick={() => navigate('#')}
+                        className="px-6 py-2transition"
+                    >
+                        <Book />Documentação
+                    </Button>
                     <Button
                         onClick={handleSetOpenEditModal}>
                         <Edit />
