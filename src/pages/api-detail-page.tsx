@@ -4,7 +4,7 @@ import { ChartLogVolume } from "@/components/dashboards/chart-log-volume";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/theme-context";
-import { ArrowLeft, Calendar, CircleCheck, CircleX, Clock, Copy, Edit, Eye, FileText, Globe, IterationCcw, Key, Link, RotateCcw } from "lucide-react";
+import { ArrowLeft, Book, Calendar, CircleCheck, CircleX, Clock, Copy, Edit, Eye, FileText, Globe, IterationCcw, Key, Link, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
@@ -112,6 +112,13 @@ export function ApiDetailPage() {
                 </div>
                 <div className="flex gap-2">
                     <Button
+                        variant="link"
+                        onClick={() => navigate('#')}
+                        className="px-6 py-2transition"
+                    >
+                        <Book />Documentação
+                    </Button>
+                    <Button
                         onClick={handleSetOpenEditModal}>
                         <Edit />
                         Editar
@@ -141,7 +148,7 @@ export function ApiDetailPage() {
                 <div className="flex w-full items-center justify-between gap-4">
                     <div className="flex items-center gap-2 w-50">
                         <Link className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} size={15} />
-                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>URL</span>
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>URL para envio</span>
                     </div>
                     <Input ref={inputRef} disabled={true} value={'POST http://localhost:6333/api/v1/logs'} />
                     <Tooltip>
@@ -160,7 +167,7 @@ export function ApiDetailPage() {
                 <div className="flex w-full items-center justify-between gap-4">
                     <div className="flex items-center gap-2 w-50">
                         <Key className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} size={15} />
-                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Token</span>
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Token para uso</span>
                     </div>
                     <Input ref={inputRef} disabled={true} value={short.toString()} />
                     <Tooltip>
@@ -176,7 +183,7 @@ export function ApiDetailPage() {
                         </TooltipContent>
                     </Tooltip>
                 </div>
-                <div className="flex w-full items-center justify-start gap-4">
+                <div className="flex w-full items-center justify-start gap-4 mt-2">
                     <div className="flex items-center gap-2 w-42">
                         <Calendar className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} size={15} />
                         <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Data de Expiração</span>
@@ -230,10 +237,10 @@ export function ApiDetailPage() {
                 <Card title="Total de Logs" value="350" className="text-xl">
                     <FileText />
                 </Card>
-                <Card title="Média por Hora" value="20">
+                <Card title="Média de Logs por Hora" value="20">
                     <Clock className="text-purple-600" />
                 </Card>
-                <Card title="Média por Dia" value="5">
+                <Card title="Média de Logs por Dia" value="5">
                     <Clock className="text-primary-background" />
                 </Card>
             </div>

@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, X } from "lucide-react"
-import { Textarea } from "../ui/textarea"
 
 import {
     Select,
@@ -23,30 +22,36 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-interface EditClientModalProps {
+interface EditUserModalProps {
     openModal: boolean
     onSetOpenEditModal: () => void
 }
 
-export function EditAPIModal({ openModal, onSetOpenEditModal }: EditClientModalProps) {
+export function EditUserModal({ openModal, onSetOpenEditModal }: EditUserModalProps) {
     return (
         <Dialog open={openModal} onOpenChange={onSetOpenEditModal}>
             <form>
                 <DialogContent className="p-8">
                     <DialogHeader>
-                        <DialogTitle>Editar API</DialogTitle>
+                        <DialogTitle>Editar Usuário</DialogTitle>
                         <DialogDescription>
-                            Editar dados da API
+                            Editar dados do usuário
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 space-y-3">
                         <div className="grid gap-3">
                             <Label>Nome</Label>
-                            <Input placeholder="Nome da API..." />
+                            <Input placeholder="Nome do usuário..." />
                         </div>
-                        <div className="grid gap-3">
-                            <Label>Descrição</Label>
-                            <Textarea placeholder="Descrição opcional..." />
+                        <div className="flex gap-4 items-center justify-center">
+                            <div className="w-full grid gap-3">
+                                <Label>Email</Label>
+                                <Input placeholder="Email do usuário..." />
+                            </div>
+                            <div className="w-full grid gap-3">
+                                <Label>Senha</Label>
+                                <Input type="password" placeholder="Senha do usuário..." />
+                            </div>
                         </div>
                         <div className="flex gap-4 items-center justify-center">
                             <div className="w-full grid gap-3">
@@ -73,12 +78,31 @@ export function EditAPIModal({ openModal, onSetOpenEditModal }: EditClientModalP
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Clientes</SelectLabel>
+                                            <SelectItem value="0">Todos</SelectItem>
                                             <SelectItem value="1">HealthTech SA</SelectItem>
                                             <SelectItem value="2">LogiTrans</SelectItem>
                                             <SelectItem value="3">EduPlatform</SelectItem>
                                             <SelectItem value="4">TechCorp Brasil</SelectItem>
                                             <SelectItem value="5">Fintech Solutions</SelectItem>
                                             <SelectItem value="6">E-commerce Plus</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                        <div className="w-full grid gap-3">
+                            <div className="grid gap-3">
+                                <Label>Perfil</Label>
+                                <Select>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Selecione um cliente..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Perfil</SelectLabel>
+                                            <SelectItem value="super-admin">SUPER ADMIN</SelectItem>
+                                            <SelectItem value="admin">ADMIN</SelectItem>
+                                            <SelectItem value="member">MEMBRO</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>

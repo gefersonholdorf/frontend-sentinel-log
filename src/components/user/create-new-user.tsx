@@ -6,12 +6,12 @@ import {
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, X } from "lucide-react"
-import { Textarea } from "../ui/textarea"
 
 import {
     Select,
@@ -23,30 +23,34 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-interface EditClientModalProps {
-    openModal: boolean
-    onSetOpenEditModal: () => void
-}
-
-export function EditAPIModal({ openModal, onSetOpenEditModal }: EditClientModalProps) {
+export function CreateNewUserModal({ children }: { children: React.ReactNode }) {
     return (
-        <Dialog open={openModal} onOpenChange={onSetOpenEditModal}>
+        <Dialog>
             <form>
+                <DialogTrigger asChild>
+                    {children}
+                </DialogTrigger>
                 <DialogContent className="p-8">
                     <DialogHeader>
-                        <DialogTitle>Editar API</DialogTitle>
+                        <DialogTitle>Novo Usuário</DialogTitle>
                         <DialogDescription>
-                            Editar dados da API
+                            Adicionar novo usuário
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 space-y-3">
                         <div className="grid gap-3">
                             <Label>Nome</Label>
-                            <Input placeholder="Nome da API..." />
+                            <Input placeholder="Nome do usuário..." />
                         </div>
-                        <div className="grid gap-3">
-                            <Label>Descrição</Label>
-                            <Textarea placeholder="Descrição opcional..." />
+                        <div className="flex gap-4 items-center justify-center">
+                            <div className="w-full grid gap-3">
+                                <Label>Email</Label>
+                                <Input placeholder="Email do usuário..." />
+                            </div>
+                            <div className="w-full grid gap-3">
+                                <Label>Senha</Label>
+                                <Input type="password" placeholder="Senha do usuário..." />
+                            </div>
                         </div>
                         <div className="flex gap-4 items-center justify-center">
                             <div className="w-full grid gap-3">
@@ -73,6 +77,7 @@ export function EditAPIModal({ openModal, onSetOpenEditModal }: EditClientModalP
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Clientes</SelectLabel>
+                                            <SelectItem value="0">Todos</SelectItem>
                                             <SelectItem value="1">HealthTech SA</SelectItem>
                                             <SelectItem value="2">LogiTrans</SelectItem>
                                             <SelectItem value="3">EduPlatform</SelectItem>
@@ -84,12 +89,30 @@ export function EditAPIModal({ openModal, onSetOpenEditModal }: EditClientModalP
                                 </Select>
                             </div>
                         </div>
+                        <div className="w-full grid gap-3">
+                            <div className="grid gap-3">
+                                <Label>Perfil</Label>
+                                <Select>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Selecione um cliente..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Perfil</SelectLabel>
+                                            <SelectItem value="super-admin">SUPER ADMIN</SelectItem>
+                                            <SelectItem value="admin">ADMIN</SelectItem>
+                                            <SelectItem value="member">MEMBRO</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
                     <DialogFooter className="mt-6">
                         <DialogClose asChild>
                             <Button variant="outline"><X />Cancelar</Button>
                         </DialogClose>
-                        <Button className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Salvar</Button>
+                        <Button className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Criar</Button>
                     </DialogFooter>
                 </DialogContent>
             </form>

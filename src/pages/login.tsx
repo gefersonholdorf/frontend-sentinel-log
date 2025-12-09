@@ -10,7 +10,17 @@ export function LoginPage() {
     const { theme } = useTheme()
     const navigate = useNavigate()
     return (
-        <div className="h-screen w-full flex flex-col gap-4 items-center justify-center">
+        <div
+            className="
+    h-screen w-full flex flex-col gap-2 items-center justify-center
+    bg-linear-to-br from-slate-50 via-slate-200 to-slate-200
+    dark:bg-linear-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-700
+    transition-all duration-500
+  "
+        >
+            <img width={150} src={`${theme === 'light' ? './logo-dark.png' : './logo-light.png'}`} />
+            <h2 className="text-3xl font-bold text-gray-700 dark:text-zinc-200">Bem-vindo ao seu Painel de Monitoramento e Logs</h2>
+            <p className={`text-medium text-gray-400 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Entre no sistema e acompanhe em tempo real tudo o que acontece em sua aplicação.</p>
             <Tooltip>
                 <TooltipTrigger>
                     <ThemeSwitcher />
@@ -19,19 +29,17 @@ export function LoginPage() {
                     <p>Mudar para tema {theme === 'light' ? 'escuro' : 'claro'}</p>
                 </TooltipContent>
             </Tooltip>
-            <h2 className="text-3xl font-bold">Seja Bem-Vindo ao SentinelLog</h2>
-            <p className={`text-medium text-gray-400 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Acesse agora seu sistema de monitoramento/logs</p>
             <Card className={`
                         w-2/6 flex items-center justify-between gap-6 p-8 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
-                        ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-300'}
+                        ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-slate-900 border-zinc-700 text-gray-300'}
                     `}>
                 <div className="w-full">
                     <label>E-mail</label>
-                    <Input className="w-full" />
+                    <Input className="w-full bg-gray-100/70 border" />
                 </div>
                 <div className="w-full">
                     <label>Senha</label>
-                    <Input />
+                    <Input className="bg-gray-100/70 border" />
                 </div>
 
                 <Button onClick={() => navigate('/dashboard')} className="bg-primary-background w-full text-zinc-100 font-bold cursor-pointer hover:bg-sky-600">Entrar</Button>
