@@ -22,17 +22,72 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import type { Client } from "@/pages/clients-page"
+import z from "zod"
+import { Controller, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect } from "react"
+import { useUpdateClient } from "@/http/client/use-update-client-by-id"
 
 interface EditClientModalProps {
     openModal: boolean
     onSetOpenEditModal: () => void
+    client: Client | null
 }
 
-export function EditClientModal({ openModal, onSetOpenEditModal }: EditClientModalProps) {
+const updateClientSchema = z.object({
+    name: z.string().min(3, "O nome do cliente deve ter pelo menos 3 caracteres"),
+    description: z.string().min(3, "A descrição do cliente deve ter pelo menos 3 caracteres"),
+    isActive: z.enum(['active', 'inactive'])
+})
+
+type UpdateClientFormData = z.infer<typeof updateClientSchema>
+
+export function EditClientModal({ openModal, onSetOpenEditModal, client }: EditClientModalProps) {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        control,
+        formState: { errors }
+    } = useForm<UpdateClientFormData>({
+        resolver: zodResolver(updateClientSchema),
+        defaultValues: {
+            name: '',
+            description: '',
+            isActive: undefined
+        }
+    })
+
+    const { mutateAsync: updateClient, isPending } = useUpdateClient()
+
+    useEffect(() => {
+        if (!client) return
+
+        reset({
+            name: client.name,
+            description: client.description,
+            isActive: client.isActive === true ? 'active' : 'inactive'
+        })
+    }, [client, reset])
+
+    async function handleUpdateClientSubmit(data: UpdateClientFormData) {
+        if (!client) {
+            return
+        }
+        await updateClient({
+            ...data,
+            id: client.id,
+            isActive: data.isActive === 'active' ? true : false
+        })
+
+        onSetOpenEditModal()
+    }
+
     return (
-        <Dialog open={openModal} onOpenChange={onSetOpenEditModal}>
-            <form>
-                <DialogContent className="p-8">
+        <Dialog open={openModal && !!client} onOpenChange={onSetOpenEditModal}>
+            <DialogContent className="p-8">
+                <form onSubmit={handleSubmit(handleUpdateClientSubmit)}>
                     <DialogHeader>
                         <DialogTitle>Editar Cliente</DialogTitle>
                         <DialogDescription>
@@ -42,36 +97,53 @@ export function EditClientModal({ openModal, onSetOpenEditModal }: EditClientMod
                     <div className="grid gap-4 space-y-3">
                         <div className="grid gap-3">
                             <Label>Nome</Label>
-                            <Input placeholder="Nome do cliente..." />
+                            <Input
+                                {...register('name')}
+                                placeholder="Nome do cliente..."
+                            />
+                            {errors.name && <p className="text-[.8rem] text-red-500">{errors.name.message}</p>}
                         </div>
                         <div className="grid gap-3">
                             <Label>Descrição</Label>
-                            <Textarea placeholder="Descrição opcional..." />
+                            <Textarea
+                                {...register('description')}
+                                placeholder="Descrição opcional..."
+                            />
+                            {errors.description && <p className="text-[.8rem] text-red-500">{errors.description.message}</p>}
                         </div>
                         <div className="grid gap-3">
                             <Label>Status</Label>
-                            <Select defaultValue={'active'}>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Selecione um status..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Status</SelectLabel>
-                                        <SelectItem value="active">Ativo</SelectItem>
-                                        <SelectItem value="inactive">Inativo</SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
+                            <Controller
+                                name="isActive"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        value={field.value}
+                                        onValueChange={field.onChange}
+                                    >
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Selecione um status..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectLabel>Status</SelectLabel>
+                                                <SelectItem value="active">Ativo</SelectItem>
+                                                <SelectItem value="inactive">Inativo</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
                         </div>
                     </div>
                     <DialogFooter className="mt-6">
                         <DialogClose asChild>
-                            <Button variant="outline"><X />Cancelar</Button>
+                            <Button disabled={isPending} variant="outline"><X />Cancelar</Button>
                         </DialogClose>
-                        <Button className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Salvar</Button>
+                        <Button disabled={isPending} className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Salvar</Button>
                     </DialogFooter>
-                </DialogContent>
-            </form>
+                </form>
+            </DialogContent>
         </Dialog>
     )
 }

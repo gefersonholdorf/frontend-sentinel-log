@@ -6,6 +6,7 @@ export function ThemeSwitcher() {
     const { theme, toggleTheme } = useTheme()
     return (
         <Button
+            type="button"
             className={`
                 cursor-pointer bg-transparent hover:bg-transparent hover:text-primary-background
                 ${theme === 'light' ? 'text-gray-800' : 'text-gray-100'}

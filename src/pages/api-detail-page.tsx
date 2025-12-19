@@ -263,7 +263,7 @@ export function ApiDetailPage() {
                 </div>
             </div>
 
-            <DataTable columns={columns} data={logs} component="apis" haveAction={false} onOpenEditModal={() => console.log()} hasPagination={false} />
+            <DataTable paginationParams={{ page: 1 }} columns={columns} data={logs} component="apis" haveAction={false} onOpenEditModal={() => console.log()} hasPagination={false} />
 
             <EditAPIModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
             <RenewTokenModal openModal={openRenewModal} onSetOpenRenewTokenModal={handleSetOpenRenewModal} />

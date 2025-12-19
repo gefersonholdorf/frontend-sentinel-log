@@ -259,7 +259,7 @@ export function APIsPage() {
 
             <InputPrimary placeholder="Buscar APIs..." />
 
-            <DataTable columns={columns} data={apis} hasPagination={true} component="apis" haveAction={true} onOpenEditModal={handleSetOpenEditModal} onOpenRenewTokenModal={handleSetOpenRenewTokenModal} />
+            <DataTable paginationParams={{ page: 1 }} columns={columns} data={apis} hasPagination={true} component="apis" haveAction={true} onOpenEditModal={handleSetOpenEditModal} onOpenRenewTokenModal={handleSetOpenRenewTokenModal} />
 
             <EditAPIModal openModal={openEditModal} onSetOpenEditModal={handleSetOpenEditModal} />
             <RenewTokenModal openModal={openRenewTokenModal} onSetOpenRenewTokenModal={handleSetOpenRenewTokenModal} />

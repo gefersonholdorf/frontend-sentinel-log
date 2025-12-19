@@ -3,13 +3,23 @@ import { Button } from "./ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
 import { useTheme } from "@/context/theme-context";
 
-export function Pagination() {
+export interface PaginationProps {
+    paginationParams: {
+        page: number
+        perPage: number
+        totalPages: number
+        onSetPage: (newPage: number) => void
+        onSetPerPage: (newPerPage: number) => void
+    }
+}
+
+export function Pagination({ paginationParams }: PaginationProps) {
     const { theme } = useTheme()
     return (
         <div className="w-full border-t flex items-center justify-between gap-4 p-5">
             <div className="flex gap-2 items-center">
                 <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>Itens por página</span>
-                <Select defaultValue="10">
+                <Select defaultValue="10" onValueChange={(value) => paginationParams.onSetPerPage(Number(value))}>
                     <SelectTrigger>
                         <SelectValue />
                     </SelectTrigger>
@@ -24,12 +34,13 @@ export function Pagination() {
                 </Select>
             </div>
             <div className="flex gap-4 items-center">
-                <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>Página <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-800 font-bold' : 'text-gray-100 font-bold'}`}>1</span> de <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-800 font-bold' : 'text-gray-100 font-bold'}`}>20</span></span>
+                <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>Página <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-800 font-bold' : 'text-gray-100 font-bold'}`}>{paginationParams.page}</span> de <span className={`font-medium text-sm ${theme === 'light' ? 'text-gray-800 font-bold' : 'text-gray-100 font-bold'}`}>{paginationParams.totalPages}</span></span>
                 <div className="flex items-center">
                     <Button
                         variant="outline"
                         className="rounded-r-none rounded-l-lg"
-                        disabled
+                        disabled={paginationParams.page <= 1}
+                        onClick={() => paginationParams.onSetPage(paginationParams.page - 1)}
                     >
                         <ArrowLeft className="mr-2" />
                         Anterior
@@ -38,6 +49,8 @@ export function Pagination() {
                     <Button
                         variant="outline"
                         className="rounded-l-none rounded-r-lg"
+                        disabled={paginationParams.page >= paginationParams.totalPages}
+                        onClick={() => paginationParams.onSetPage(paginationParams.page + 1)}
                     >
                         Próximo
                         <ArrowRight className="ml-2" />

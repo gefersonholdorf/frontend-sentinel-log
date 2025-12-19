@@ -10,27 +10,36 @@ import { ClientDetailPage } from "./pages/client-detail-page";
 import { ApiDetailPage } from "./pages/api-detail-page";
 import { LoginPage } from "./pages/login";
 import HomePage from "./pages/home-page";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import { Toaster } from "@/components/ui/sonner"
+
+const queryClient = new QueryClient()
 
 export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-        <Route element={<Layout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/apis" element={<APIsPage />} />
-          <Route path="/clients" element={<ClientsPage />} />
-          <Route path="/logs" element={<LogsPage />} />
-          <Route path="/users" element={<UsersPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/apis" element={<APIsPage />} />
+            <Route path="/clients" element={<ClientsPage />} />
+            <Route path="/logs" element={<LogsPage />} />
+            <Route path="/users" element={<UsersPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
 
-          <Route path="/clients/:id" element={<ClientDetailPage />} />
-          <Route path="/apis/:id" element={<ApiDetailPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-
+            <Route path="/clients/:id" element={<ClientDetailPage />} />
+            <Route path="/apis/:id" element={<ApiDetailPage />} />
+          </Route>
+        </Routes>
+        <Toaster position="top-center" expand={true} richColors />
+      </BrowserRouter>
+    </QueryClientProvider>
   )
 }

@@ -42,7 +42,7 @@ export function Layout() {
 
                         <div className="flex items-center justify-center gap-1">
                             <Tooltip>
-                                <TooltipTrigger>
+                                <TooltipTrigger asChild>
                                     <ThemeSwitcher />
                                 </TooltipTrigger>
                                 <TooltipContent>

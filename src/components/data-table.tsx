@@ -3,6 +3,7 @@ import { Edit, EllipsisVertical, Eye, IterationCw, RotateCcw, X } from "lucide-r
 import { useNavigate } from "react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Pagination } from "./pagination";
+import type { Client } from "@/pages/clients-page";
 
 interface WithId {
     id: string | number;
@@ -17,14 +18,21 @@ export interface DataTableColumn<T> {
 export interface DataTableProps<T extends WithId> {
     columns: DataTableColumn<T>[];
     data: T[];
+    paginationParams: {
+        page: number
+        perPage: number
+        totalPages: number
+        onSetPage: (newPage: number) => void
+        onSetPerPage: (newPerPage: number) => void
+    }
     component: string
     haveAction: boolean
-    onOpenEditModal: () => void
+    onOpenEditModal: (client: Client) => void
     onOpenRenewTokenModal?: () => void
     hasPagination: boolean
 }
 
-export function DataTable<T extends WithId>({ columns, data, component, haveAction, onOpenEditModal, onOpenRenewTokenModal, hasPagination }: DataTableProps<T>) {
+export function DataTable<T extends WithId>({ columns, data, paginationParams, component, haveAction, onOpenEditModal, onOpenRenewTokenModal, hasPagination }: DataTableProps<T>) {
     const { theme } = useTheme()
     const navigate = useNavigate()
 
@@ -67,7 +75,12 @@ export function DataTable<T extends WithId>({ columns, data, component, haveActi
                                     <div className="p-2 rounded-lg hover:text-primary-background">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <EllipsisVertical className="size-4 cursor-pointer" />
+                                                <button
+                                                    type="button"
+                                                    className="p-1 rounded hover:text-primary-background"
+                                                >
+                                                    <EllipsisVertical className="size-4" />
+                                                </button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="start">
                                                 <DropdownMenuLabel>Ações</DropdownMenuLabel>
@@ -78,7 +91,7 @@ export function DataTable<T extends WithId>({ columns, data, component, haveActi
                                                         Visualizar
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
-                                                        onClick={() => onOpenEditModal()}>
+                                                        onClick={() => onOpenEditModal(row as unknown as Client)}>
                                                         <Edit />
                                                         Editar
                                                     </DropdownMenuItem>
@@ -90,7 +103,7 @@ export function DataTable<T extends WithId>({ columns, data, component, haveActi
                                                                 Renovar Token
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
-                                                                onClick={() => onOpenEditModal()}>
+                                                                onClick={() => onOpenEditModal(row as unknown as Client)}>
                                                                 <IterationCw className="text-red-500" />
                                                                 Revogar Token
                                                             </DropdownMenuItem>
@@ -113,12 +126,12 @@ export function DataTable<T extends WithId>({ columns, data, component, haveActi
                     <tfoot>
                         <tr>
                             <td colSpan={columns.length + (haveAction ? 1 : 0)}>
-                                <Pagination />
+                                <Pagination paginationParams={paginationParams} />
                             </td>
                         </tr>
                     </tfoot>
                 )}
-            </table>
+            </table >
 
         </>
     );
