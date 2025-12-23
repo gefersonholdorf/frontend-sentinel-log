@@ -94,7 +94,7 @@ export function EditClientModal({ openModal, onSetOpenEditModal, client }: EditC
                             Editar dados do cliente
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 space-y-3">
+                    <div className="grid gap-4 space-y-3 mt-6">
                         <div className="grid gap-3">
                             <Label>Nome</Label>
                             <Input

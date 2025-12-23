@@ -3,7 +3,6 @@ import { Edit, EllipsisVertical, Eye, IterationCw, RotateCcw, X } from "lucide-r
 import { useNavigate } from "react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Pagination } from "./pagination";
-import type { Client } from "@/pages/clients-page";
 
 interface WithId {
     id: string | number;
@@ -27,7 +26,7 @@ export interface DataTableProps<T extends WithId> {
     }
     component: string
     haveAction: boolean
-    onOpenEditModal: (client: Client) => void
+    onOpenEditModal: (t: T) => void
     onOpenRenewTokenModal?: () => void
     hasPagination: boolean
 }
@@ -91,7 +90,7 @@ export function DataTable<T extends WithId>({ columns, data, paginationParams, c
                                                         Visualizar
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
-                                                        onClick={() => onOpenEditModal(row as unknown as Client)}>
+                                                        onClick={() => onOpenEditModal(row as unknown as T)}>
                                                         <Edit />
                                                         Editar
                                                     </DropdownMenuItem>
@@ -103,7 +102,7 @@ export function DataTable<T extends WithId>({ columns, data, paginationParams, c
                                                                 Renovar Token
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
-                                                                onClick={() => onOpenEditModal(row as unknown as Client)}>
+                                                                onClick={() => onOpenEditModal(row as unknown as T)}>
                                                                 <IterationCw className="text-red-500" />
                                                                 Revogar Token
                                                             </DropdownMenuItem>

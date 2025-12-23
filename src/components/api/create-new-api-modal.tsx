@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Copy, Key, Plus, X } from "lucide-react"
+import { Plus, X } from "lucide-react"
 import { Textarea } from "../ui/textarea"
 
 import {
@@ -23,107 +23,144 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useRef } from "react"
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
+import { useCreateApi } from "@/http/api/use-create-api"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Controller, useForm } from "react-hook-form"
+import z from "zod"
 
-export function CreateNewAPIModal({ children }: { children: React.ReactNode }) {
-    const token = crypto.randomUUID()
-    const short = token.length > 10 ? token.slice(0, 15) + "..." : token;
+interface CreateNewApiModalProps {
+    children: React.ReactNode
+    openModal: boolean
+    onSetOpenCreateModal: () => void
+}
 
-    const inputRef = useRef<HTMLInputElement>(null);
+const createApiSchema = z.object({
+    name: z.string().min(3, "O nome da API deve ter pelo menos 3 caracteres"),
+    description: z.string().min(3, "A descrição da API deve ter pelo menos 3 caracteres"),
+    isActive: z.enum(['active', 'inactive']),
+    urlCallbackStatus: z.url("Deve ser uma URL válida"),
+    clientId: z.string().min(1, "Selecione um cliente")
+})
 
-    const handleCopy = () => {
-        if (inputRef.current) {
-            navigator.clipboard.writeText(`${token}`).then(() => console.log('OK')).catch(() => console.log('Erro'))
+type CreateApiFormData = z.infer<typeof createApiSchema>
+
+export function CreateNewAPIModal({ children, openModal, onSetOpenCreateModal }: CreateNewApiModalProps) {
+    const { register, handleSubmit, control, formState: { errors } } = useForm<CreateApiFormData>({
+        resolver: zodResolver(createApiSchema),
+        defaultValues: {
+            name: '',
+            description: '',
+            isActive: 'active',
+            urlCallbackStatus: ''
         }
+    })
+
+    const { mutateAsync: createApi, isPending } = useCreateApi()
+
+    async function handleCreateApiSubmit(data: CreateApiFormData) {
+        console.log(data)
+        await createApi({
+            ...data,
+            clientId: Number(data.clientId),
+            isActive: data.isActive === 'active' ? true : false
+        })
+        onSetOpenCreateModal()
     }
+
     return (
-        <Dialog>
-            <form>
-                <DialogTrigger asChild>
-                    {children}
-                </DialogTrigger>
-                <DialogContent className="p-8">
+        <Dialog open={openModal} onOpenChange={onSetOpenCreateModal}>
+            <DialogTrigger asChild>
+                {children}
+            </DialogTrigger>
+            <DialogContent className="p-8">
+                <form onSubmit={handleSubmit(handleCreateApiSubmit)}>
                     <DialogHeader>
                         <DialogTitle>Nova API</DialogTitle>
                         <DialogDescription>
                             Adicionar nova API
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 space-y-3">
+                    <div className="grid gap-4 space-y-3 mt-6">
                         <div className="grid gap-3">
                             <Label>Nome</Label>
-                            <Input placeholder="Nome do cliente..." />
+                            <Input placeholder="Nome da API..." {...register('name')} />
+                            {errors.name && <p className="text-[.8rem] text-red-500">{errors.name.message}</p>}
                         </div>
                         <div className="grid gap-3">
                             <Label>Descrição</Label>
-                            <Textarea placeholder="Descrição opcional..." />
+                            <Textarea placeholder="Descrição opcional..." {...register('description')} />
+                            {errors.description && <p className="text-[.8rem] text-red-500">{errors.description.message}</p>}
                         </div>
                         <div className="flex gap-4 items-center justify-center">
                             <div className="w-full grid gap-3">
                                 <Label>Status</Label>
-                                <Select defaultValue={'active'}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Selecione um status..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Status</SelectLabel>
-                                            <SelectItem value="active">Ativo</SelectItem>
-                                            <SelectItem value="inactive">Inativo</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                                <Controller
+                                    name="isActive"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Selecione um status..." />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Status</SelectLabel>
+                                                    <SelectItem value="active">Ativo</SelectItem>
+                                                    <SelectItem value="inactive">Inativo</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
+                                {errors.isActive && <p className="text-[.8rem] text-red-500">{errors.isActive.message}</p>}
                             </div>
                             <div className="w-full grid gap-3">
                                 <Label>Cliente</Label>
-                                <Select>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Selecione um cliente..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>Clientes</SelectLabel>
-                                            <SelectItem value="1">HealthTech SA</SelectItem>
-                                            <SelectItem value="2">LogiTrans</SelectItem>
-                                            <SelectItem value="3">EduPlatform</SelectItem>
-                                            <SelectItem value="4">TechCorp Brasil</SelectItem>
-                                            <SelectItem value="5">Fintech Solutions</SelectItem>
-                                            <SelectItem value="6">E-commerce Plus</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                                <Controller
+                                    name="clientId"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            value={field.value}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Selecione um cliente..." />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>Clientes</SelectLabel>
+                                                    <SelectItem value="1">HealthTech SA</SelectItem>
+                                                    <SelectItem value="2">LogiTrans</SelectItem>
+                                                    <SelectItem value="3">EduPlatform</SelectItem>
+                                                    <SelectItem value="4">TechCorp Brasil</SelectItem>
+                                                    <SelectItem value="5">Fintech Solutions</SelectItem>
+                                                    <SelectItem value="6">E-commerce Plus</SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    )}
+                                />
+                                {errors.clientId && <p className="text-[.8rem] text-red-500">{errors.clientId.message}</p>}
                             </div>
                         </div>
                         <div className="grid gap-3">
-                            <Label>Token de Acesso</Label>
-                            <div className="flex items-center gap-2">
-                                <Key className="size-4" />
-                                <Input ref={inputRef} disabled value={short.toString()} />
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button
-                                            type="button"
-                                            onClick={handleCopy}
-                                        >
-                                            <Copy />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <p>Copiar token</p>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </div>
+                            <Label>URL Callback Status</Label>
+                            <Input type="url" placeholder="Informe a URL de callback de status..." {...register('urlCallbackStatus')} />
+                            {errors.urlCallbackStatus && <p className="text-[.8rem] text-red-500">{errors.urlCallbackStatus.message}</p>}
                         </div>
                     </div>
                     <DialogFooter className="mt-6">
                         <DialogClose asChild>
-                            <Button variant="outline"><X />Cancelar</Button>
+                            <Button disabled={isPending} variant="outline"><X />Cancelar</Button>
                         </DialogClose>
-                        <Button className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Criar</Button>
+                        <Button disabled={isPending} className="bg-primary-background hover:bg-sky-600 text-white" type="submit"><Plus />Criar</Button>
                     </DialogFooter>
-                </DialogContent>
-            </form>
-        </Dialog>
+                </form>
+            </DialogContent>
+        </Dialog >
     )
 }
