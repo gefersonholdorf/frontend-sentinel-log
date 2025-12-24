@@ -15,6 +15,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { Toaster } from "@/components/ui/sonner"
+import { MeProvider } from "./context/me-context";
 
 const queryClient = new QueryClient()
 
@@ -25,8 +26,12 @@ export function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+        </Routes>
 
-          <Route element={<Layout />}>
+        <Routes>
+          <Route element={<MeProvider>
+            <Layout />
+          </MeProvider>}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/apis" element={<APIsPage />} />
             <Route path="/clients" element={<ClientsPage />} />
@@ -39,7 +44,7 @@ export function App() {
           </Route>
         </Routes>
         <Toaster position="top-center" expand={true} richColors />
-      </BrowserRouter>
-    </QueryClientProvider>
+      </BrowserRouter >
+    </QueryClientProvider >
   )
 }

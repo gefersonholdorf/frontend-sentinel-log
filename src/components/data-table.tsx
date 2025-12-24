@@ -1,8 +1,8 @@
 import { useTheme } from "@/context/theme-context";
-import { Edit, EllipsisVertical, Eye, IterationCw, RotateCcw, X } from "lucide-react";
+import { Edit, EllipsisVertical, Eye, IterationCw, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Pagination } from "./pagination";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 interface WithId {
     id: string | number;
@@ -27,11 +27,12 @@ export interface DataTableProps<T extends WithId> {
     component: string
     haveAction: boolean
     onOpenEditModal: (t: T) => void
-    onOpenRenewTokenModal?: () => void
+    onOpenRenewTokenModal?: (t: T) => void
+    onOpenRevokeTokenModal?: (t: T) => void
     hasPagination: boolean
 }
 
-export function DataTable<T extends WithId>({ columns, data, paginationParams, component, haveAction, onOpenEditModal, onOpenRenewTokenModal, hasPagination }: DataTableProps<T>) {
+export function DataTable<T extends WithId>({ columns, data, paginationParams, component, haveAction, onOpenEditModal, onOpenRevokeTokenModal, onOpenRenewTokenModal, hasPagination }: DataTableProps<T>) {
     const { theme } = useTheme()
     const navigate = useNavigate()
 
@@ -97,21 +98,17 @@ export function DataTable<T extends WithId>({ columns, data, paginationParams, c
                                                     {component === 'apis' && (
                                                         <>
                                                             <DropdownMenuItem
-                                                                onClick={() => onOpenRenewTokenModal && onOpenRenewTokenModal()}>
+                                                                onClick={() => onOpenRenewTokenModal && onOpenRenewTokenModal(row as unknown as T)}>
                                                                 <RotateCcw />
                                                                 Renovar Token
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
-                                                                onClick={() => onOpenEditModal(row as unknown as T)}>
+                                                                onClick={() => onOpenRevokeTokenModal && onOpenRevokeTokenModal(row as unknown as T)}>
                                                                 <IterationCw className="text-red-500" />
                                                                 Revogar Token
                                                             </DropdownMenuItem>
                                                         </>
                                                     )}
-                                                    <DropdownMenuItem>
-                                                        <X className="text-red-500" />
-                                                        Inativar
-                                                    </DropdownMenuItem>
                                                 </ DropdownMenuGroup>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

@@ -15,30 +15,30 @@ import {
 
 interface DatePickerProps {
     title: string
+    value?: Date
+    onValueChange: (date?: Date) => void
 }
 
-export function DatePicker({ title }: DatePickerProps) {
-    const [date, setDate] = React.useState<Date>()
-
+export function DatePicker({ title, value, onValueChange }: DatePickerProps) {
     return (
         <Popover>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
-                    data-empty={!date}
+                    data-empty={!value}
                     className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal bg-background hover:bg-background text-gray-500 hover:text-gray-500 dark:bg-background dark:hover:bg-background dark:text-gray-400"
                 >
                     <CalendarIcon />
-                    {date
-                        ? format(date, "dd/MM/yyyy", { locale: ptBR })
+                    {value
+                        ? format(value, "dd/MM/yyyy", { locale: ptBR })
                         : <span>{title}</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
                 <Calendar
                     mode="single"
-                    selected={date}
-                    onSelect={setDate}
+                    selected={value}
+                    onSelect={onValueChange}
                     locale={ptBR}
                 />
             </PopoverContent>

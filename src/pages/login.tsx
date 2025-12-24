@@ -30,9 +30,7 @@ export function LoginPage() {
     const { mutateAsync: login, isPending } = useLogin()
 
     async function handleLoginSubmit(data: LoginFormSchema) {
-        const { token } = await login(data)
-
-        localStorage.setItem('token', token)
+        await login(data)
     }
 
     return (
@@ -57,7 +55,7 @@ export function LoginPage() {
                 </TooltipContent>
             </Tooltip>
             <Card className={`
-                        w-2/6 flex items-center justify-between gap-6 p-8 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
+                        w-5/6 lg:w-3/6 flex items-center justify-between gap-6 p-8 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
                         ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-slate-900 border-zinc-700 text-gray-300'}
                     `}>
                 <div className="w-full">

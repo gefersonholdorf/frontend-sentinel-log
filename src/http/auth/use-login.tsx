@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -13,6 +13,7 @@ interface LoginResponse {
 
 export function useLogin() {
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     return useMutation({
         mutationKey: ['login'],
         mutationFn: async (data: LoginRequest) => {
@@ -32,8 +33,12 @@ export function useLogin() {
 
             return response
         },
-        onSuccess: () => {
+        onSuccess: async (data) => {
+            await localStorage.setItem('token', data.token)
+
             toast.success('Login realizado com sucesso!')
+
+            await queryClient.refetchQueries({ queryKey: ['me'] })
 
             navigate('/dashboard')
         },

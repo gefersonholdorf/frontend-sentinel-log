@@ -16,11 +16,12 @@ import { useTheme } from "@/context/theme-context";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "@/lib/use-debounce";
+import { RevokeTokenApiModal } from "@/components/api/revoke-token-api-modal";
 
 dayjs.extend(relativeTime)
 dayjs.locale("pt-br")
 
-interface Api {
+export interface Api {
     id: number
     name: string
     description: string
@@ -72,7 +73,7 @@ const columns: DataTableColumn<Api>[] = [
 
             return (
                 <div>
-                    {daysRemaining <= 3 && (
+                    {daysRemaining <= 1 && (
                         <span className="flex gap-2 items-center">
                             <Tooltip>
                                 <TooltipTrigger asChild>
@@ -85,7 +86,7 @@ const columns: DataTableColumn<Api>[] = [
                             {dayjs(value ? value.toString() : '---').format('DD/MM/YYYY')}
                         </span>
                     )}
-                    {(daysRemaining <= 15 && daysRemaining > 3) && (
+                    {(daysRemaining <= 15 && daysRemaining > 1) && (
                         <span className="flex gap-2 items-center">
                             <Tooltip>
                                 <TooltipTrigger asChild>
@@ -164,6 +165,7 @@ export function APIsPage() {
     const [openEditModal, setOpenEditModal] = useState(false)
     const [openCreateModal, setOpenCreateModal] = useState(false)
     const [openRenewTokenModal, setOpenRenewTokenModal] = useState(false)
+    const [openRevokeTokenModal, setOpenRevokeTokenModal] = useState(false)
 
     const [selectedApi, setSelectedApi] = useState<Api | null>(null)
 
@@ -224,13 +226,33 @@ export function APIsPage() {
         setOpenEditModal(true)
     }
 
+    function handleOpenRenewModal(api: Api) {
+        setSelectedApi(api)
+        setOpenRenewTokenModal(true)
+    }
+
     function handleCloseEditModal() {
         setOpenEditModal(false)
         setSelectedApi(null)
     }
 
+    function handleCloseRenewtModal() {
+        setOpenRenewTokenModal(false)
+        setSelectedApi(null)
+    }
+
     function handleSetOpenCreateModal() {
         setOpenCreateModal((prev) => !prev)
+    }
+
+    function handleOpenRevokeModal(api: Api) {
+        setSelectedApi(api)
+        setOpenRevokeTokenModal(true)
+    }
+
+    function handleCloseRevokeModal() {
+        setSelectedApi(null)
+        setOpenRevokeTokenModal(false)
     }
 
     return (
@@ -270,15 +292,21 @@ export function APIsPage() {
                     component="apis"
                     haveAction
                     onOpenEditModal={handleOpenEditModal}
+                    onOpenRenewTokenModal={handleOpenRenewModal}
+                    onOpenRevokeTokenModal={handleOpenRevokeModal}
                 />
             )}
 
-            {/* <EditAPIModal
+            <EditAPIModal
                 api={selectedApi} openModal={openEditModal} onSetOpenEditModal={handleCloseEditModal}
             />
             <RenewTokenModal
-                api={selectedApi} openModal={openEditModal} onSetOpenEditModal={handleCloseEditModal}
-            /> */}
+                api={selectedApi} openModal={openRenewTokenModal} onSetOpenRenewTokenModal={handleCloseRenewtModal}
+            />
+
+            <RevokeTokenApiModal
+                api={selectedApi} openModal={openRevokeTokenModal} onSetOpenRevokeTokenModal={handleCloseRevokeModal}
+            />
         </div>
     )
 }
