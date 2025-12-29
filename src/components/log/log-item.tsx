@@ -34,16 +34,16 @@ export function LogItem({ log }: LogItemProps) {
                     <div className="w-full flex flex-col gap-2">
                         <div className="flex items-center gap-4 justify-between">
                             <span className={`text-sm truncate font-semibold ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>{log.message}</span>
-                            <span className="text-[.7rem]">{dayjs(log.createdAt).format('DD/MM/YYYY HH:mm')}</span>
+                            <span className="text-[.7rem]">{dayjs(log.date).format('DD/MM/YYYY HH:mm')}</span>
                         </div>
                         <div className="flex gap-2">
                             <div className="px-3 py-1 rounded-lg border flex items-center justify-center gap-1">
                                 <Globe size={15} />
-                                <span className="text-[.7rem]">{log.api}</span>
+                                <span className="text-[.7rem]">{log.apiName}</span>
                             </div>
                             <div className="px-3 py-1 rounded-lg border flex items-center justify-center gap-1">
                                 <User size={15} />
-                                <span className="text-[.7rem]">{log.client}</span>
+                                <span className="text-[.7rem]">{log.clientName}</span>
                             </div>
                         </div>
                     </div>
@@ -65,7 +65,7 @@ export function LogItem({ log }: LogItemProps) {
                         <div className="grid grid-cols-3 gap-x-4 gap-y-1">
                             <div className="flex flex-col">
                                 <span className="font-normal">Origem:</span>
-                                <span className={`font-semibold ${theme === 'dark' && 'text-gray-300'}`}>{log.origin}</span>
+                                <span className={`font-semibold ${theme === 'dark' && 'text-gray-300'}`}>{log.ip}</span>
                             </div>
 
                             <div className="flex flex-col">
@@ -85,7 +85,7 @@ export function LogItem({ log }: LogItemProps) {
 
                             <div className="flex flex-col">
                                 <span className="font-normal">Id do Registro Afetado:</span>
-                                <span className={`font-semibold ${theme === 'dark' && 'text-gray-300'}`}>{log.idRegisterAffected}</span>
+                                <span className={`font-semibold ${theme === 'dark' && 'text-gray-300'}`}>{log.affectedRecordID}</span>
                             </div>
                         </div>
                     </div>

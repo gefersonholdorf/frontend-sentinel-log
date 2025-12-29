@@ -1,233 +1,224 @@
-import { ComboboxApis } from "@/components/api/combobox-apis";
 import { ComboboxClients } from "@/components/client/combobox-clients";
 import { LogItem } from "@/components/log/log-item";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { DatePicker } from "@/components/ui/date-picker";
+import { DatePickerHour } from "@/components/ui/date-picker-hour";
 import { InputPrimary } from "@/components/ui/input-primary";
 import { TitlePage } from "@/components/ui/title-page";
 import { useTheme } from "@/context/theme-context";
-import { Search } from "lucide-react";
+import { useFetchLogs } from "@/http/logs/use-fetch-logs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
+import z from "zod";
 
 export interface Log {
-    id: number
+    id: string
     message: string
     component: string
     action: string
-    createdAt: Date
-    api: string
-    client: string
-    origin: string
+    date: Date
+    apiName: string
+    clientName: string
+    ip: string
     user: string
-    idRegisterAffected: string
+    affectedRecordID: string
 }
 
-const logs: Log[] = [
-    {
-        id: 1,
-        message: "Novo cliente cadastrado com sucesso.",
-        component: "Cliente",
-        action: "Criar",
-        createdAt: new Date("2025-12-08T11:45:00Z"),
-        api: "Faturamento",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.15",
-        user: "Geferson Alves",
-        idRegisterAffected: "2048"
-    },
-    {
-        id: 2,
-        message: "Informações do cliente atualizadas.",
-        component: "Cliente",
-        action: "Atualizar",
-        createdAt: new Date("2025-12-08T11:48:12Z"),
-        api: "Faturamento",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.22",
-        user: "Marcos Silva",
-        idRegisterAffected: "2048"
-    },
-    {
-        id: 3,
-        message: "Pedido criado com sucesso.",
-        component: "Pedido",
-        action: "Criar",
-        createdAt: new Date("2025-12-08T11:53:02Z"),
-        api: "Pedidos",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.33",
-        user: "Ana Pereira",
-        idRegisterAffected: "8891"
-    },
-    {
-        id: 4,
-        message: "Pagamento registrado.",
-        component: "Financeiro",
-        action: "Registrar",
-        createdAt: new Date("2025-12-08T12:01:55Z"),
-        api: "Financeiro",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.40",
-        user: "Geferson Alves",
-        idRegisterAffected: "5532"
-    },
-    {
-        id: 5,
-        message: "Erro ao calcular impostos.",
-        component: "Fiscal",
-        action: "Calcular",
-        createdAt: new Date("2025-12-08T12:05:11Z"),
-        api: "Fiscal",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.12",
-        user: "Carla Souza",
-        idRegisterAffected: "7783"
-    },
-    {
-        id: 6,
-        message: "Produto adicionado ao estoque.",
-        component: "Estoque",
-        action: "Adicionar",
-        createdAt: new Date("2025-12-08T12:10:48Z"),
-        api: "Estoque",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.19",
-        user: "João Mendes",
-        idRegisterAffected: "9012"
-    },
-    {
-        id: 7,
-        message: "Produto removido do estoque.",
-        component: "Estoque",
-        action: "Remover",
-        createdAt: new Date("2025-12-08T12:14:20Z"),
-        api: "Estoque",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.19",
-        user: "João Mendes",
-        idRegisterAffected: "9012"
-    },
-    {
-        id: 8,
-        message: "Configuração do sistema atualizada.",
-        component: "Sistema",
-        action: "Atualizar",
-        createdAt: new Date("2025-12-08T12:16:57Z"),
-        api: "Core",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.10",
-        user: "Geferson Alves",
-        idRegisterAffected: "SYS-01"
-    },
-    {
-        id: 9,
-        message: "Tentativa de login mal sucedida.",
-        component: "Autenticação",
-        action: "Login",
-        createdAt: new Date("2025-12-08T12:18:41Z"),
-        api: "Auth",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.55",
-        user: "Usuário Desconhecido",
-        idRegisterAffected: "-"
-    },
-    {
-        id: 10,
-        message: "Usuário autenticado com sucesso.",
-        component: "Autenticação",
-        action: "Login",
-        createdAt: new Date("2025-12-08T12:19:01Z"),
-        api: "Auth",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.25",
-        user: "Marcos Silva",
-        idRegisterAffected: "USR-552"
-    },
-    {
-        id: 11,
-        message: "Backup diário concluído.",
-        component: "Backup",
-        action: "Executar",
-        createdAt: new Date("2025-12-08T12:25:40Z"),
-        api: "Backup",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.5",
-        user: "Sistema",
-        idRegisterAffected: "BKP-20251208"
-    },
-    {
-        id: 12,
-        message: "Envio de e-mail concluído.",
-        component: "Notificação",
-        action: "Enviar",
-        createdAt: new Date("2025-12-08T12:28:00Z"),
-        api: "Notificações",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.77",
-        user: "Ana Pereira",
-        idRegisterAffected: "EMAIL-4421"
-    },
-    {
-        id: 13,
-        message: "Relatório financeiro gerado.",
-        component: "Financeiro",
-        action: "Gerar",
-        createdAt: new Date("2025-12-08T12:30:12Z"),
-        api: "Financeiro",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.40",
-        user: "Carla Souza",
-        idRegisterAffected: "REL-8821"
-    },
-    {
-        id: 14,
-        message: "Desconto aplicado ao pedido.",
-        component: "Pedido",
-        action: "Atualizar",
-        createdAt: new Date("2025-12-08T12:33:44Z"),
-        api: "Pedidos",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.33",
-        user: "Ana Pereira",
-        idRegisterAffected: "8891"
-    },
-    {
-        id: 15,
-        message: "Fornecedor cadastrado.",
-        component: "Fornecedor",
-        action: "Criar",
-        createdAt: new Date("2025-12-08T12:35:28Z"),
-        api: "Compras",
-        client: "Alpha Sistemas",
-        origin: "192.168.0.60",
-        user: "João Mendes",
-        idRegisterAffected: "FNC-221"
-    }
-];
+const filteringLogsSchema = z.object({
+    filter: z.string().optional(),
+    clientId: z.string().min(1, "Selecione um cliente").optional(),
+    apiId: z.string().min(1, "Selecione uma API").optional(),
+    dateFrom: z.date().optional(),
+    dateTo: z.date().optional(),
+})
+
+type FilteringLogsSchema = z.infer<typeof filteringLogsSchema>
 
 export function LogsPage() {
     const { theme } = useTheme()
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [appliedFilter, setAppliedFilter] = useState<string | undefined>(
+        searchParams.get("filter") ?? undefined
+    )
+
+    const [clientId, setClientId] = useState<string | undefined>(
+        searchParams.get("clientId") ?? undefined
+    )
+
+    const [apiId, setApiId] = useState<string | undefined>(
+        searchParams.get("apiId") ?? undefined
+    )
+
+    const [dateFrom, setDateFrom] = useState<Date | undefined>(
+        searchParams.get("dateFrom")
+            ? new Date(searchParams.get("dateFrom")!)
+            : undefined
+    )
+
+    const [dateTo, setDateTo] = useState<Date | undefined>(
+        searchParams.get("dateTo")
+            ? new Date(searchParams.get("dateTo")!)
+            : undefined
+    )
+
+    const { handleSubmit, register, control } = useForm<FilteringLogsSchema>({
+        resolver: zodResolver(filteringLogsSchema),
+        defaultValues: {
+            filter: appliedFilter
+        }
+    })
+
+    const loadMoreRef = useRef<HTMLDivElement>(null)
+    const observerRef = useRef<IntersectionObserver>(null)
+
+    const { data, hasNextPage, fetchNextPage, isFetchingNextPage } = useFetchLogs({
+        filter: appliedFilter,
+        clientId: clientId ? Number(clientId) : undefined,
+        apiId: apiId ? Number(apiId) : undefined,
+        dateFrom,
+        dateTo
+    })
+
+    const logs = data.pages.flatMap(page => page.data)
+
+    function onFilteringSubmit(data: FilteringLogsSchema) {
+        setAppliedFilter(data.filter)
+        setClientId(data.clientId)
+        setApiId(data.apiId)
+        setDateFrom(data.dateFrom)
+        setDateTo(data.dateTo)
+
+        const params: Record<string, string> = {}
+
+        if (data.filter) params.filter = data.filter
+        if (data.clientId) params.clientId = data.clientId
+        if (data.apiId) params.apiId = data.apiId
+        if (data.dateFrom) params.dateFrom = data.dateFrom.toISOString()
+        if (data.dateTo) params.dateTo = data.dateTo.toISOString()
+
+        setSearchParams(params)
+    }
+
+    useEffect(() => {
+        if (observerRef.current) {
+            observerRef.current.disconnect()
+        }
+
+        observerRef.current = new IntersectionObserver(entries => {
+            const entry = entries[0]
+
+            if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+                fetchNextPage()
+            }
+        }, {
+            threshold: 0.1
+        })
+
+        if (loadMoreRef.current) {
+            observerRef.current.observe(loadMoreRef.current)
+        }
+
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect()
+            }
+        }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+
     return (
         <div className="p-6 space-y-6">
             <TitlePage title="Logs" description="Visualize e filtre todos os logs do sistema" />
 
             <Card className={`
-                        grid grid-cols-3 gap-4 items-center justify-between p-4 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.01]
+                        border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.01]
                         ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-300'}
                     `}>
-                <InputPrimary placeholder="Buscar logs..." />
-                <ComboboxClients />
-                <ComboboxApis />
-                <DatePicker title="Data Inicial" />
-                <DatePicker title="Data Final" />
-                <Button className="bg-primary-background/70 hover:bg-sky-600 text-white"><Search />Filtrar</Button>
+                <form onSubmit={handleSubmit(onFilteringSubmit)} className="grid grid-cols-3 gap-4 items-center justify-between p-4">
+                    <InputPrimary
+                        placeholder="Buscar logs..."
+                        {...register('filter')}
+                    />
+
+                    <div className="w-full grid gap-3">
+                        <Controller
+                            name="clientId"
+                            control={control}
+                            render={({ field }) => (
+                                <ComboboxClients
+                                    value={field.value}
+                                    onValueChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="w-full grid gap-3">
+                        <Controller
+                            name="apiId"
+                            control={control}
+                            render={({ field }) => (
+                                <ComboboxClients
+                                    value={field.value}
+                                    onValueChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="w-full grid gap-3">
+                        <Controller
+                            name="dateFrom"
+                            control={control}
+                            render={({ field }) => (
+                                <DatePickerHour
+                                    title="Data Inicial"
+                                    value={field.value}
+                                    onValueChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </div>
+                    <div className="w-full grid gap-3">
+                        <Controller
+                            name="dateTo"
+                            control={control}
+                            render={({ field }) => (
+                                <DatePickerHour
+                                    title="Data Final"
+                                    value={field.value}
+                                    onValueChange={field.onChange}
+                                />
+                            )}
+                        />
+                    </div>
+                    <Button
+                        className="bg-primary-background/70 hover:bg-sky-600 text-white"
+                        type="submit"
+                    >
+                        <Search />
+                        Filtrar
+                    </Button>
+                </form>
             </Card >
 
             <div className="grid grid-cols-2 gap-4">
-                {logs.map((item) => (
-                    <LogItem key={item.id} log={item} />
+                {logs.map(log => (
+                    <LogItem key={log.id} log={log} />
                 ))}
             </div>
+
+            {hasNextPage && (
+                <div className="p-2" ref={loadMoreRef}>
+                    {isFetchingNextPage && (
+                        <div className="flex items-center justify-center py-2">
+                            <Loader2 className="size-5 animate-spin" />
+                        </div>
+                    )}
+                </div>
+            )}
         </div >
     )
 }

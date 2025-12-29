@@ -15,51 +15,17 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-const clients = [
-    {
-        value: "quantumsoft",
-        label: "QuantumSoft Solutions"
-    },
-    {
-        value: "nova-tech",
-        label: "NovaTech Systems"
-    },
-    {
-        value: "cyberwave",
-        label: "CyberWave Technologies"
-    },
-    {
-        value: "bluecore",
-        label: "BlueCore Innovations"
-    },
-    {
-        value: "vertex-digital",
-        label: "Vertex Digital Labs"
-    },
-    {
-        value: "skybridge",
-        label: "SkyBridge Data Services"
-    },
-    {
-        value: "primecode",
-        label: "PrimeCode Technologies"
-    },
-    {
-        value: "stellarworks",
-        label: "StellarWorks IT"
-    },
-    {
-        value: "neuronix",
-        label: "Neuronix Software"
-    },
-    {
-        value: "infraone",
-        label: "InfraOne Cloud Solutions"
-    }
-]
-export function ComboboxClients() {
+import { useComboboxClients } from "@/http/client/use-combobox-clients"
+
+interface ComboboxClientsProps {
+    value?: string
+    onValueChange: (value?: string) => void
+}
+
+export function ComboboxClients({ value, onValueChange }: ComboboxClientsProps) {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("")
+    const { data: clients } = useComboboxClients()
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -70,7 +36,7 @@ export function ComboboxClients() {
                     className="w-full justify-between bg-background hover:bg-background text-gray-500 hover:text-gray-500 dark:bg-background dark:hover:bg-background dark:text-gray-400"
                 >
                     {value
-                        ? clients.find((clients) => clients.value === value)?.label
+                        ? clients && clients.data.find((clients) => String(clients.value) === value)?.label
                         : "Selecione um cliente..."}
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
@@ -79,22 +45,26 @@ export function ComboboxClients() {
                 <Command>
                     <CommandInput placeholder="Selecione um cliente..." className="h-9" />
                     <CommandList>
-                        <CommandEmpty>No clients found.</CommandEmpty>
+                        <CommandEmpty>Nenhum cliente encontrado...</CommandEmpty>
                         <CommandGroup>
-                            {clients.map((clients) => (
+                            {clients && clients.data.map((clients) => (
                                 <CommandItem
                                     key={clients.value}
-                                    value={clients.value}
-                                    onSelect={(currentValue) => {
-                                        setValue(currentValue === value ? "" : currentValue)
+                                    value={`${clients.value} ${clients.label}`}
+                                    onSelect={() => {
+                                        if (value === String(clients.value)) {
+                                            onValueChange(undefined)
+                                        } else {
+                                            onValueChange(String(clients.value))
+                                        }
                                         setOpen(false)
                                     }}
                                 >
                                     {clients.label}
                                     <Check
                                         className={cn(
-                                            "ml-auto",
-                                            value === clients.value ? "opacity-100" : "opacity-0"
+                                            "ml-auto transition-opacity",
+                                            value === String(clients.value) ? "opacity-100" : "opacity-0"
                                         )}
                                     />
                                 </CommandItem>

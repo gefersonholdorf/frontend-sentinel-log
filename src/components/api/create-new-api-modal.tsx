@@ -27,6 +27,7 @@ import { useCreateApi } from "@/http/api/use-create-api"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import z from "zod"
+import { ComboboxClients } from "../client/combobox-clients"
 
 interface CreateNewApiModalProps {
     children: React.ReactNode
@@ -58,7 +59,6 @@ export function CreateNewAPIModal({ children, openModal, onSetOpenCreateModal }:
     const { mutateAsync: createApi, isPending } = useCreateApi()
 
     async function handleCreateApiSubmit(data: CreateApiFormData) {
-        console.log(data)
         await createApi({
             ...data,
             clientId: Number(data.clientId),
@@ -123,25 +123,10 @@ export function CreateNewAPIModal({ children, openModal, onSetOpenCreateModal }:
                                     name="clientId"
                                     control={control}
                                     render={({ field }) => (
-                                        <Select
+                                        <ComboboxClients
                                             value={field.value}
                                             onValueChange={field.onChange}
-                                        >
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Selecione um cliente..." />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectGroup>
-                                                    <SelectLabel>Clientes</SelectLabel>
-                                                    <SelectItem value="1">HealthTech SA</SelectItem>
-                                                    <SelectItem value="2">LogiTrans</SelectItem>
-                                                    <SelectItem value="3">EduPlatform</SelectItem>
-                                                    <SelectItem value="4">TechCorp Brasil</SelectItem>
-                                                    <SelectItem value="5">Fintech Solutions</SelectItem>
-                                                    <SelectItem value="6">E-commerce Plus</SelectItem>
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
+                                        />
                                     )}
                                 />
                                 {errors.clientId && <p className="text-[.8rem] text-red-500">{errors.clientId.message}</p>}

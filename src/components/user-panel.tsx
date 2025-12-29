@@ -66,7 +66,9 @@ export function UserPanel({ open, theme }: UserPanelProps) {
                             {isLoading ? 'Carregando...' : user && user.name}
                         </span>
                         <span className="transition-all duration-700 truncate text-sm font-semibold"></span>
-                        <span className={`transition-all duration-700 truncate text-[.8rem] ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} `}>geferson@gmail.com.br</span>
+                        <span className={`transition-all duration-700 truncate text-[.8rem] ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} `}>
+                            {isLoading ? 'Carregando...' : user && user.email}
+                        </span>
                     </div>
                     <Tooltip>
                         <TooltipTrigger>
