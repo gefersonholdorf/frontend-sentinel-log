@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { InputPrimary } from "@/components/ui/input-primary";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TitlePage } from "@/components/ui/title-page";
+import { useMeContext } from "@/context/me-context";
 import { useTheme } from "@/context/theme-context";
 import { useFetchClient } from "@/http/client/use-fetch-clients";
 import { useDebounce } from "@/lib/use-debounce";
@@ -103,6 +104,8 @@ export function ClientsPage() {
 
     const [selectedClient, setSelectedClient] = useState<Client | null>(null)
 
+    const { user } = useMeContext()
+
     const [searchParams, setSearchParams] = useSearchParams();
 
     const page = Number(searchParams.get("page") ?? 1);
@@ -176,10 +179,12 @@ export function ClientsPage() {
                     openModal={openCreateModal}
                     onSetOpenCreateModal={handleSetOpenCreateModal}
                 >
-                    <Button className="bg-primary-background hover:bg-sky-600 text-white">
-                        <Plus />
-                        Adicionar Cliente
-                    </Button>
+                    {user && (
+                        <Button disabled={user.role == 'member'} className="bg-primary-background hover:bg-sky-600 text-white">
+                            <Plus />
+                            Adicionar Cliente
+                        </Button>
+                    )}
                 </CreateNewClientModal>
             </TitlePage>
 

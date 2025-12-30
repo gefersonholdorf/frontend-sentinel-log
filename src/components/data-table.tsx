@@ -3,6 +3,7 @@ import { Edit, EllipsisVertical, Eye, IterationCw, RotateCcw } from "lucide-reac
 import { useNavigate } from "react-router";
 import { Pagination } from "./pagination";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { useMeContext } from "@/context/me-context";
 
 interface WithId {
     id: string | number;
@@ -35,6 +36,7 @@ export interface DataTableProps<T extends WithId> {
 export function DataTable<T extends WithId>({ columns, data, paginationParams, component, haveAction, onOpenEditModal, onOpenRevokeTokenModal, onOpenRenewTokenModal, hasPagination }: DataTableProps<T>) {
     const { theme } = useTheme()
     const navigate = useNavigate()
+    const { user } = useMeContext()
 
     return (
         <>
@@ -90,20 +92,25 @@ export function DataTable<T extends WithId>({ columns, data, paginationParams, c
                                                         <Eye />
                                                         Visualizar
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => onOpenEditModal(row as unknown as T)}>
-                                                        <Edit />
-                                                        Editar
-                                                    </DropdownMenuItem>
-                                                    {component === 'apis' && (
+                                                    {user && (
+                                                        <DropdownMenuItem
+                                                            disabled={user.role == 'member'}
+                                                            onClick={() => onOpenEditModal(row as unknown as T)}>
+                                                            <Edit />
+                                                            Editar
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                    {(component === 'apis' && user) && (
                                                         <>
                                                             <DropdownMenuItem
-                                                                onClick={() => onOpenRenewTokenModal && onOpenRenewTokenModal(row as unknown as T)}>
+                                                                onClick={() => onOpenRenewTokenModal && onOpenRenewTokenModal(row as unknown as T)}
+                                                                disabled={user.role == 'member'}>
                                                                 <RotateCcw />
                                                                 Renovar Token
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
-                                                                onClick={() => onOpenRevokeTokenModal && onOpenRevokeTokenModal(row as unknown as T)}>
+                                                                onClick={() => onOpenRevokeTokenModal && onOpenRevokeTokenModal(row as unknown as T)}
+                                                                disabled={user.role == 'member'}>
                                                                 <IterationCw className="text-red-500" />
                                                                 Revogar Token
                                                             </DropdownMenuItem>

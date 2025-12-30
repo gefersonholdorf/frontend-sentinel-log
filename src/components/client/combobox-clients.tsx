@@ -20,9 +20,10 @@ import { useComboboxClients } from "@/http/client/use-combobox-clients"
 interface ComboboxClientsProps {
     value?: string
     onValueChange: (value?: string) => void
+    disable?: boolean
 }
 
-export function ComboboxClients({ value, onValueChange }: ComboboxClientsProps) {
+export function ComboboxClients({ value, onValueChange, disable = false }: ComboboxClientsProps) {
     const [open, setOpen] = React.useState(false)
     const { data: clients } = useComboboxClients()
 
@@ -30,6 +31,7 @@ export function ComboboxClients({ value, onValueChange }: ComboboxClientsProps) 
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
+                    disabled={disable}
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}

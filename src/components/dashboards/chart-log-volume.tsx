@@ -1,4 +1,3 @@
-import { CartesianGrid, XAxis, YAxis, Area, AreaChart } from "recharts"
 import {
     Card,
     CardContent,
@@ -13,33 +12,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import { useTheme } from "@/context/theme-context"
-
-const chartData = [
-    { hour: "00:00", quantity: 186 },
-    { hour: "01:00", quantity: 152 },
-    { hour: "02:00", quantity: 98 },
-    { hour: "03:00", quantity: 75 },
-    { hour: "04:00", quantity: 63 },
-    { hour: "05:00", quantity: 82 },
-    { hour: "06:00", quantity: 120 },
-    { hour: "07:00", quantity: 168 },
-    { hour: "08:00", quantity: 214 },
-    { hour: "09:00", quantity: 305 },
-    { hour: "10:00", quantity: 284 },
-    { hour: "11:00", quantity: 237 },
-    { hour: "12:00", quantity: 265 },
-    { hour: "13:00", quantity: 229 },
-    { hour: "14:00", quantity: 198 },
-    { hour: "15:00", quantity: 176 },
-    { hour: "16:00", quantity: 209 },
-    { hour: "17:00", quantity: 231 },
-    { hour: "18:00", quantity: 214 },
-    { hour: "19:00", quantity: 190 },
-    { hour: "20:00", quantity: 158 },
-    { hour: "21:00", quantity: 143 },
-    { hour: "22:00", quantity: 112 },
-    { hour: "23:00", quantity: 96 },
-]
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 const chartConfig = {
     quantity: {
@@ -48,7 +21,14 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export function ChartLogVolume() {
+interface ChartLogVolumeProps {
+    volumeLogsTodayData: {
+        hour: string
+        quantity: number
+    }[]
+}
+
+export function ChartLogVolume({ volumeLogsTodayData }: ChartLogVolumeProps) {
     const { theme } = useTheme()
     return (
         <Card className={`
@@ -63,7 +43,7 @@ export function ChartLogVolume() {
                 <ChartContainer config={chartConfig} className="h-55 w-full">
                     <AreaChart
                         accessibilityLayer
-                        data={chartData}
+                        data={volumeLogsTodayData}
                         margin={{
                             left: -20,
                             right: 12,

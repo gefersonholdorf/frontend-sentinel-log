@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "@/lib/use-debounce";
 import { RevokeTokenApiModal } from "@/components/api/revoke-token-api-modal";
+import { useMeContext } from "@/context/me-context";
 
 dayjs.extend(relativeTime)
 dayjs.locale("pt-br")
@@ -167,6 +168,8 @@ export function APIsPage() {
     const [openRenewTokenModal, setOpenRenewTokenModal] = useState(false)
     const [openRevokeTokenModal, setOpenRevokeTokenModal] = useState(false)
 
+    const { user } = useMeContext()
+
     const [selectedApi, setSelectedApi] = useState<Api | null>(null)
 
     const [searchParams, setSearchParams] = useSearchParams();
@@ -262,10 +265,12 @@ export function APIsPage() {
                     openModal={openCreateModal}
                     onSetOpenCreateModal={handleSetOpenCreateModal}
                 >
-                    <Button className="bg-primary-background hover:bg-sky-600 text-white">
-                        <Plus />
-                        Adicionar API
-                    </Button>
+                    {user && (
+                        <Button disabled={user.role == 'member'} className="bg-primary-background hover:bg-sky-600 text-white">
+                            <Plus />
+                            Adicionar API
+                        </Button>
+                    )}
                 </CreateNewAPIModal>
             </TitlePage>
 

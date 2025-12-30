@@ -4,6 +4,7 @@ import { ChartLogVolume } from "@/components/dashboards/chart-log-volume";
 import { ChartLogsApi } from "@/components/dashboards/chart-logs-api";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
+import { useGetClientById } from "@/http/client/use-client-by-id";
 import { ArrowLeft, Edit, Eye, FileText, Globe, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -90,6 +91,8 @@ const apis: Api[] = [
 export function ClientDetailPage() {
     const navigate = useNavigate()
     const [openEditModal, setOpenEditModal] = useState(false)
+
+    const { data } = useGetClientById(3)
 
     function handleSetOpenEditModal() {
         setOpenEditModal(!openEditModal)
