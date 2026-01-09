@@ -28,7 +28,7 @@ export function LogItem({ log }: LogItemProps) {
         >
             <AccordionItem value="item-1">
                 <AccordionTrigger className={`border border-gray-500 p-4 rounded-lg rounded-b-none
-                        ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-400'}
+                        ${theme === 'light' ? 'bg-zinc-100/30 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-400'}
                         border-l-3 border-l-primary-background
                     `}>
                     <div className="w-full flex flex-col gap-2">

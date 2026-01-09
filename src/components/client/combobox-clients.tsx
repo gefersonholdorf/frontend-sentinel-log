@@ -35,7 +35,7 @@ export function ComboboxClients({ value, onValueChange, disable = false }: Combo
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full justify-between bg-background hover:bg-background text-gray-500 hover:text-gray-500 dark:bg-background dark:hover:bg-background dark:text-gray-400"
+                    className="w-full justify-between bg-background hover:bg-background dark:bg-background dark:hover:bg-background"
                 >
                     {value
                         ? clients && clients.data.find((clients) => String(clients.value) === value)?.label

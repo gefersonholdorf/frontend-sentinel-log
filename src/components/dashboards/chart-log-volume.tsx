@@ -33,14 +33,14 @@ export function ChartLogVolume({ volumeLogsTodayData }: ChartLogVolumeProps) {
     return (
         <Card className={`
                             shadow-primary transition-transform duration-300 hover:scale-[1.01]
-                            ${theme === 'light' ? 'bg-gray-100/40 border-gray-200' : 'bg-zinc-900 border-zinc-700'}
+                            ${theme === 'light' ? 'bg-zinc-100/30 border-gray-200' : 'bg-zinc-900 border-zinc-700'}
                         `}>
             <CardHeader>
                 <CardTitle>Volume de Logs</CardTitle>
                 <CardDescription>Últimas 24 horas</CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig} className="h-55 w-full">
+                <ChartContainer config={chartConfig} className="h-62 w-full">
                     <AreaChart
                         accessibilityLayer
                         data={volumeLogsTodayData}

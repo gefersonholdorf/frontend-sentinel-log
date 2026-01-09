@@ -23,13 +23,29 @@ export interface GetClientByIdResponse {
             urlCallbackStatus: string
         }[]
     }
+    totalApis: number
+    totalApisActive: number
+    totalApisInactive: number
+    totalLogs: number
+    volumeLogsTodayData: {
+        hour: string
+        quantity: number
+    }[],
+    logsByApi: {
+        apis: string,
+        quantity: number
+    }[]
 }
 
-export function useGetClientById(clientId: number) {
+export function useGetClientById(clientId: number | undefined, enabled: boolean) {
     return useQuery({
         queryKey: ['client', clientId],
         queryFn: async () => {
             const token = localStorage.getItem('token')
+
+            if (!clientId) {
+                return
+            }
 
             const response = await fetch(`http://localhost:3335/api/v1/clients/${clientId}`, {
                 headers: {
@@ -51,6 +67,7 @@ export function useGetClientById(clientId: number) {
 
             return data
         },
+        enabled,
         placeholderData: keepPreviousData,
     })
 }

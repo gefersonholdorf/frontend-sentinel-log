@@ -42,7 +42,7 @@ export function DataTable<T extends WithId>({ columns, data, paginationParams, c
         <>
             <table className={`
                             w-full outline rounded-lg shadow-primary
-                            ${theme === 'light' ? 'bg-gray-100/60 outline-gray-200' : 'bg-zinc-900 outline-zinc-700'}
+                            ${theme === 'light' ? 'bg-zinc-100/30 outline-gray-200' : 'bg-zinc-900 outline-zinc-700'}
                         `}>
                 <thead>
                     <tr>
@@ -60,6 +60,11 @@ export function DataTable<T extends WithId>({ columns, data, paginationParams, c
                 </thead>
 
                 <tbody>
+                    {data.length < 1 && (
+                        <div className="p-4">
+                            <p className="text-sm">Nenhum resultado encontrado.</p>
+                        </div>
+                    )}
                     {data.map((row, i) => (
                         <tr key={i} className={`${theme === 'light' ? 'border-t border-gray-200 hover:bg-gray-200/30' : 'border-t border-zinc-700 hover:bg-zinc-800/30'}`}>
                             {columns.map((col) => {

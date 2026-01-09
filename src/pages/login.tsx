@@ -38,8 +38,8 @@ export function LoginPage() {
             onSubmit={handleSubmit(handleLoginSubmit)}
             className="
                 h-screen w-full flex flex-col gap-2 items-center justify-center
-                bg-linear-to-br from-slate-50 via-slate-200 to-slate-200
-                dark:bg-linear-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-700
+                bg-linear-to-br from-slate-100 via-zinc-200 to-slate-100
+                dark:bg-linear-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900
                 transition-all duration-500
             "
         >
@@ -56,7 +56,7 @@ export function LoginPage() {
             </Tooltip>
             <Card className={`
                         w-5/6 lg:w-2/6 flex items-center justify-between gap-6 p-8 border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.03]
-                        ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-slate-900 border-zinc-700 text-gray-300'}
+                        ${theme === 'light' ? 'bg-zinc-100/60 border-gray-200 text-gray-600' : 'bg-zinc-900/80 border-zinc-700 text-gray-300'}
                     `}>
                 <div className="w-full">
                     <label>E-mail</label>

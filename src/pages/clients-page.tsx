@@ -24,7 +24,19 @@ export interface Client {
     name: string,
     description: string,
     isActive: boolean,
-    apis: number,
+    apis?: number | {
+        id: number;
+        name: string;
+        description: string;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        clientId: number;
+        clientName: string;
+        token: string | null;
+        expiresIn: Date;
+        urlCallbackStatus: string;
+    }[],
     createdAt: Date,
     updatedAt: Date
 }
@@ -39,7 +51,7 @@ const columns: DataTableColumn<Client>[] = [
                 <div className="flex p-2 rounded-lg bg-primary-background/10">
                     <User className="size-4 text-primary-background" />
                 </div>
-                {value.toString()}
+                {value!.toString()}
             </span>
         )
     },
@@ -49,7 +61,7 @@ const columns: DataTableColumn<Client>[] = [
         render: (value) => (
             <span className="flex gap-2 items-center">
                 <Globe size={15} />
-                {value.toString()}
+                {value!.toString()}
             </span>
         )
     },
@@ -71,7 +83,7 @@ const columns: DataTableColumn<Client>[] = [
         header: "Criado Em",
         accessor: 'createdAt',
         render: (value) => (
-            <span>{dayjs(value.toString()).format('DD/MM/YYYY')}</span>
+            <span>{dayjs(value!.toString()).format('DD/MM/YYYY')}</span>
         )
     },
 ];

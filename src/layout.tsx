@@ -27,7 +27,7 @@ export function Layout() {
                     border-r p-4 flex flex-col justify-between shadow-primary max-h-screen sticky top-0
                     ${open ? 'w-2/12 animate-width' : 'w-1/14 animate-width'}
                     ${theme === 'light'
-                        ? 'border-r-gray-200 bg-gray-100/60'
+                        ? 'border-r-gray-200 bg-zinc-100/30'
                         : 'border-r-gray-800 bg-zinc-900'
                     } 
                 `}

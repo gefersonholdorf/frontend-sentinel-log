@@ -35,7 +35,7 @@ export function ChartTopApis() {
         <Card
             className={`
                         shadow-primary transition-transform duration-300 hover:scale-[1.01]
-                        ${theme === 'light' ? 'bg-gray-100/40 border-gray-200' : 'bg-zinc-900 border-zinc-700'}
+                        ${theme === 'light' ? 'bg-zinc-100/30 border-gray-200' : 'bg-zinc-900 border-zinc-700'}
                     `}
         >
             <CardHeader>

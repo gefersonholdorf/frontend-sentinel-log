@@ -79,7 +79,7 @@ export function ComboboxApis() {
                 <Command>
                     <CommandInput placeholder="Selecione uma api..." className="h-9" />
                     <CommandList>
-                        <CommandEmpty>No apis found.</CommandEmpty>
+                        <CommandEmpty>Nenhuma api encontrada.</CommandEmpty>
                         <CommandGroup>
                             {apis.map((apis) => (
                                 <CommandItem

@@ -28,11 +28,13 @@ import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect } from "react"
 import { useUpdateClient } from "@/http/client/use-update-client-by-id"
+import { useGetClientById } from "@/http/client/use-client-by-id"
 
 interface EditClientModalProps {
     openModal: boolean
     onSetOpenEditModal: () => void
     client: Client | null
+    toGoBack?: boolean
 }
 
 const updateClientSchema = z.object({
@@ -43,7 +45,7 @@ const updateClientSchema = z.object({
 
 type UpdateClientFormData = z.infer<typeof updateClientSchema>
 
-export function EditClientModal({ openModal, onSetOpenEditModal, client }: EditClientModalProps) {
+export function EditClientModal({ openModal, onSetOpenEditModal, client, toGoBack = false }: EditClientModalProps) {
     const {
         register,
         handleSubmit,
@@ -60,6 +62,8 @@ export function EditClientModal({ openModal, onSetOpenEditModal, client }: EditC
     })
 
     const { mutateAsync: updateClient, isPending } = useUpdateClient()
+
+    const { refetch } = useGetClientById(client?.id, toGoBack)
 
     useEffect(() => {
         if (!client) return
@@ -82,6 +86,10 @@ export function EditClientModal({ openModal, onSetOpenEditModal, client }: EditC
         })
 
         onSetOpenEditModal()
+
+        if (toGoBack) {
+            await refetch()
+        }
     }
 
     return (

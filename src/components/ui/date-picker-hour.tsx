@@ -46,12 +46,12 @@ export function DatePickerHour({ title, value, onValueChange }: DatePickerHourPr
     }
 
     return (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 bg-background dark:bg-background">
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
-                        className="w-full justify-between font-normal"
+                        className="w-full justify-between font-normal bg-background dark:bg-background hover:bg-background dark:hover:bg-background"
                     >
                         {value
                             ? value.toLocaleDateString()
@@ -60,7 +60,7 @@ export function DatePickerHour({ title, value, onValueChange }: DatePickerHourPr
                     </Button>
                 </PopoverTrigger>
 
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="w-auto p-0 bg-background dark:bg-background" align="start">
                     <Calendar
                         mode="single"
                         selected={value}

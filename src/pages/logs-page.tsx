@@ -136,7 +136,7 @@ export function LogsPage() {
 
             <Card className={`
                         border rounded-lg shadow-primary transition-transform duration-300 hover:scale-[1.01]
-                        ${theme === 'light' ? 'bg-gray-100/40 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-300'}
+                        ${theme === 'light' ? 'bg-zinc-100/30 border-gray-200 text-gray-600' : 'bg-zinc-900 border-zinc-700 text-gray-300'}
                     `}>
                 <form onSubmit={handleSubmit(onFilteringSubmit)} className="grid grid-cols-3 gap-4 items-center justify-between p-4">
                     <InputPrimary
@@ -195,7 +195,7 @@ export function LogsPage() {
                         />
                     </div>
                     <Button
-                        className="bg-primary-background/70 hover:bg-sky-600 text-white"
+                        className="bg-primary-background/90 hover:bg-sky-600 text-white"
                         type="submit"
                     >
                         <Search />
@@ -210,13 +210,17 @@ export function LogsPage() {
                 ))}
             </div>
 
-            {hasNextPage && (
+            {hasNextPage ? (
                 <div className="p-2" ref={loadMoreRef}>
                     {isFetchingNextPage && (
-                        <div className="flex items-center justify-center py-2">
+                        <div className="flex items-center justify-center p-2">
                             <Loader2 className="size-5 animate-spin" />
                         </div>
                     )}
+                </div>
+            ) : (
+                <div className="text-center p-2">
+                    <span className="text-sm">Todos os resultados foram carregados.</span>
                 </div>
             )}
         </div >

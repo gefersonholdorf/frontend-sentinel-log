@@ -24,11 +24,12 @@ export interface Pagination {
     page: number
     perPage: number
     filter?: string
+    clientId?: number
 }
 
-export function useFetchApi({ page, perPage, filter }: Pagination) {
+export function useFetchApi({ page, perPage, filter, clientId }: Pagination) {
     return useQuery({
-        queryKey: ['apis', page, perPage, filter],
+        queryKey: ['apis', page, perPage, filter, clientId],
         queryFn: async () => {
             const token = localStorage.getItem('token')
 
@@ -37,6 +38,10 @@ export function useFetchApi({ page, perPage, filter }: Pagination) {
                 perPage: String(perPage),
                 ...(filter ? { filter } : {}),
             })
+
+            if(clientId) {
+                params.set('clientId', clientId.toString())
+            }
 
             const response = await fetch(`http://localhost:3335/api/v1/apis?${params.toString()}`, {
                 headers: {

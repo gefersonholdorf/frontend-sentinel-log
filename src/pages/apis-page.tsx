@@ -3,9 +3,6 @@ import { Button } from "@/components/ui/button";
 import { CircleAlert, CircleCheck, CircleX, Globe, Plus } from "lucide-react";
 import { DataTable, type DataTableColumn } from "@/components/data-table";
 import { InputPrimary } from "@/components/ui/input-primary";
-import dayjs from "dayjs"
-import relativeTime from "dayjs/plugin/relativeTime"
-import "dayjs/locale/pt-br"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CreateNewAPIModal } from "@/components/api/create-new-api-modal";
 import { useEffect, useState } from "react";
@@ -18,6 +15,9 @@ import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "@/lib/use-debounce";
 import { RevokeTokenApiModal } from "@/components/api/revoke-token-api-modal";
 import { useMeContext } from "@/context/me-context";
+import dayjs from "dayjs"
+import relativeTime from "dayjs/plugin/relativeTime"
+import "dayjs/locale/pt-br"
 
 dayjs.extend(relativeTime)
 dayjs.locale("pt-br")

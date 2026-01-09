@@ -19,21 +19,70 @@ import { useTheme } from "@/context/theme-context"
 
 export const description = "A pie chart with a label"
 
-export function ChartLogsApi() {
+interface ChartLogsApiProps {
+    logsByApi: {
+        apis: string
+        quantity: number
+    }[]
+}
+
+export function ChartLogsApi({ logsByApi }: ChartLogsApiProps) {
     const { theme } = useTheme()
 
-    const paletteLight = ["#166534", "#15803D", "#22C55E", "#4ADE80", "#A7F3D0"]
-    const paletteDark = ["#4ADE80", "#22C55E", "#16A34A", "#15803D", "#14532D"]
-
-    const palette = theme === "light" ? paletteLight : paletteDark
-
-    const chartData = [
-        { apis: "Payments API", quantity: 275, fill: palette[0] },
-        { apis: "Auth Service", quantity: 200, fill: palette[1] },
-        { apis: "Catalog API", quantity: 187, fill: palette[2] },
-        { apis: "Orders API", quantity: 173, fill: palette[3] },
-        { apis: "Patient Records", quantity: 90, fill: palette[4] },
+    const paletteBlueLight = [
+        "#EFF6FF", // 1
+        "#DBEAFE", // 2
+        "#BFDBFE", // 3
+        "#93C5FD", // 4
+        "#60A5FA", // 5
+        "#3B82F6", // 6
+        "#2563EB", // 7
+        "#1D4ED8", // 8
+        "#1E40AF", // 9
+        "#1E3A8A", // 10
+        "#172554", // 11
+        "#0F172A", // 12
+        "#0B1220", // 13
+        "#0A2540", // 14
+        "#0A3A6E", // 15
+        "#0B4A8B", // 16
+        "#0C5FB3", // 17
+        "#0D6EFD", // 18
+        "#1E88E5", // 19
+        "#42A5F5"  // 20
     ]
+    const paletteBlueDark = [
+        "#93C5FD", // 1
+        "#60A5FA", // 2
+        "#3B82F6", // 3
+        "#2563EB", // 4
+        "#1D4ED8", // 5
+        "#1E40AF", // 6
+        "#1E3A8A", // 7
+        "#172554", // 8
+        "#0F172A", // 9
+        "#0B1220", // 10
+        "#0A2540", // 11
+        "#0A3A6E", // 12
+        "#0B4A8B", // 13
+        "#0C5FB3", // 14
+        "#0D6EFD", // 15
+        "#1E88E5", // 16
+        "#42A5F5", // 17
+        "#64B5F6", // 18
+        "#90CAF9", // 19
+        "#BBDEFB"  // 20
+    ]
+
+    const palette = theme === "light" ? paletteBlueLight : paletteBlueDark
+
+    const chartData = logsByApi.map((api, index) => {
+        return {
+            apis: api.apis,
+            quantity: api.quantity,
+            fill: palette[index]
+        }
+    })
 
     const chartConfig = {
         quantity: {
@@ -43,7 +92,7 @@ export function ChartLogsApi() {
     return (
         <Card className={`
                             shadow-primary transition-transform duration-300 hover:scale-[1.01]
-                            ${theme === 'light' ? 'bg-gray-100/40 border-gray-200' : 'bg-zinc-900 border-zinc-700'}
+                            ${theme === 'light' ? 'bg-zinc-100/30 border-gray-200' : 'bg-zinc-900 border-zinc-700'}
                         `}
         >
             <CardHeader className="items-center pb-0">
