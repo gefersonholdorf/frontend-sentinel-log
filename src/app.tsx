@@ -16,6 +16,7 @@ import {
 } from '@tanstack/react-query'
 import { Toaster } from "@/components/ui/sonner"
 import { MeProvider } from "./context/me-context";
+import { CompleteNewUserPage } from "./pages/complete-new-user";
 
 const queryClient = new QueryClient()
 
@@ -26,6 +27,7 @@ export function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/onboarding/validate-token" element={<CompleteNewUserPage />} />
         </Routes>
 
         <Routes>
